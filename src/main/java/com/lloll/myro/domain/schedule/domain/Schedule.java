@@ -37,7 +37,7 @@ public class Schedule {
 
     private String scheduleStatus; //'PENDING', 'CONFIRMED', 'CANCELLED'
 
-    private Date createdAt;
-    private Date updatedAt;
+    private Date startDate;
+    private Date endDate;
 
 }
