@@ -1,11 +1,12 @@
-package com.lloll.myro.schedule.entity;
+package com.lloll.myro.domain.schedule.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.Date;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,14 +14,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Tag {
+public class ScheduleTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tagId")
-    private long id;
+    @Column(name = "scheduleTagId")
+    private Long id;
 
-    @Column(unique = true)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "scheduleId")
+    private Schedule scheduleId;
 
-    private Date createdAt;
+    @ManyToOne
+    @JoinColumn(name = "tagId")
+    private Tag tagId;
+
 }

@@ -1,6 +1,6 @@
-package com.lloll.myro.schedule.entity;
+package com.lloll.myro.domain.schedule.domain;
 
-import com.lloll.myro.user.entity.User;
+import com.lloll.myro.domain.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,7 +37,7 @@ public class Schedule {
 
     private String scheduleStatus; //'PENDING', 'CONFIRMED', 'CANCELLED'
 
-    private Date createdAt;
-    private Date updatedAt;
+    private Date startDate;
+    private Date endDate;
 
 }
