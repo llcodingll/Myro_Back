@@ -1,18 +1,13 @@
 package com.lloll.myro.domain.schedule.application;
 
-import com.lloll.myro.domain.schedule.dao.ScheduleRepository;
 import com.lloll.myro.domain.schedule.dto.ScheduleDto;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class ScheduleService {
-    private final ScheduleRepository repository;
+public interface ScheduleService {
 
-    @Transactional
-    public void createSchedule(ScheduleDto createScheduleDto) {
-
-    }
+    void createSchedule(ScheduleDto createScheduleDto);
+    List<ScheduleDto> getAllSchedules(ScheduleDto getScheduleDto);
+    ScheduleDto getScheduleById(ScheduleDto getScheduleDto, Long scheduleId);
+    ScheduleDto updateSchedule(ScheduleDto updateScheduleDto, Long scheduleId);
+    void deleteSchedule(Long scheduleId);
 }
