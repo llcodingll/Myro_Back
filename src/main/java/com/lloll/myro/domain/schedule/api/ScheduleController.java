@@ -20,7 +20,7 @@ public class ScheduleController {
 
     private final ScheduleService service;
 
-    @PostMapping("/id")
+    @PostMapping()
     public ScheduleDto createSchedule(@Valid @RequestBody ScheduleDto request) {
         return service.createSchedule(request);
     }
