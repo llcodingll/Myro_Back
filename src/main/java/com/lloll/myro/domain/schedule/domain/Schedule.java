@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.util.Date;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,4 +41,15 @@ public class Schedule {
     private Date startDate;
     private Date endDate;
 
+    @Builder
+    public Schedule(String title, String description, Date startDate, Date endDate, boolean isRecurring, String recurrenceRule, String scheduleStatus, User userId) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isRecurring = isRecurring;
+        this.recurrenceRule = recurrenceRule;
+        this.scheduleStatus = scheduleStatus;
+        this.userId = userId;
+    }
 }
