@@ -1,8 +1,8 @@
-package com.lloll.myro.user.entity;
+package com.lloll.myro.domain.user.domain;
 
-import com.lloll.myro.eventLog.entity.EventLog;
-import com.lloll.myro.notification.entity.Notification;
-import com.lloll.myro.schedule.entity.Schedule;
+import com.lloll.myro.domain.eventLog.domain.EventLog;
+import com.lloll.myro.domain.notification.domain.Notification;
+import com.lloll.myro.domain.schedule.domain.Schedule;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
