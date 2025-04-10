@@ -1,7 +1,6 @@
 package com.lloll.myro.domain.schedule.application;
 
 import com.lloll.myro.domain.schedule.dao.ScheduleRepository;
-import com.lloll.myro.domain.schedule.domain.Schedule;
 import com.lloll.myro.domain.schedule.dto.ScheduleDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +13,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public ScheduleDto createSchedule(ScheduleDto request) {
-        Schedule schedule = Schedule.builder()
-                .title(request.getTitle())
-                .description(request.getDescription())
-                .isRecurring(request.isRecurring())
-                .scheduleStatus(request.getScheduleStatus())
-                .startDate(request.getStartDate())
-                .endDate(request.getEndDate())
-                .build();
-        repository.save(request);
+
         return request;
     }
 
