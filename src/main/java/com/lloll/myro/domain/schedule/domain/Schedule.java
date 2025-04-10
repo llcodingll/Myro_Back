@@ -3,13 +3,15 @@ package com.lloll.myro.domain.schedule.domain;
 import com.lloll.myro.domain.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,18 +33,18 @@ public class Schedule {
 
     private String title;
     private String description;
-    private Date startTime;
-    private Date endTime;
-    private boolean isRecurring; //반복 일정
+
+    private Boolean isRecurring; //반복 일정 여부(선택)
     private String recurrenceRule; //반복 일정 규칙(ex: "FREQ=WEEKLY;BYDAY=MO,WE,FR")
 
-    private String scheduleStatus; //'PENDING', 'CONFIRMED', 'CANCELLED'
+    @Enumerated(EnumType.STRING)
+    private ScheduleStatus scheduleStatus;
 
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     @Builder
-    public Schedule(String title, String description, Date startDate, Date endDate, boolean isRecurring, String recurrenceRule, String scheduleStatus, User userId) {
+    public Schedule(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Boolean isRecurring, String recurrenceRule, ScheduleStatus scheduleStatus, User userId) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;

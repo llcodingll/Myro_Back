@@ -21,8 +21,8 @@ public class ScheduleController {
     private final ScheduleService service;
 
     @PostMapping()
-    public ScheduleDto createSchedule(@Valid @RequestBody ScheduleDto request) {
-        return service.createSchedule(request);
+    public void createSchedule(@Valid @RequestBody ScheduleDto request) {
+        service.createSchedule(request);
     }
 
     @GetMapping()

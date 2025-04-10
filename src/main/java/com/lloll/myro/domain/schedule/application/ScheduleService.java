@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ScheduleService {
 
-    ScheduleDto createSchedule(ScheduleDto createScheduleDto);
+    void createSchedule(ScheduleDto createScheduleDto);
     List<ScheduleDto> getAllSchedules(ScheduleDto getScheduleDto);
     ScheduleDto getScheduleById(Long scheduleId);
     ScheduleDto updateSchedule(Long scheduleId, ScheduleDto updateScheduleDto);

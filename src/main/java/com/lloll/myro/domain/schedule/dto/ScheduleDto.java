@@ -1,8 +1,9 @@
 package com.lloll.myro.domain.schedule.dto;
 
+import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
 import com.lloll.myro.domain.user.domain.User;
 import jakarta.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,15 +18,15 @@ public class ScheduleDto {
     @NotNull
     private String description;
 
-    private boolean isRecurring;
+    private Boolean isRecurring;
     private String recurrenceRule;
-    private String scheduleStatus;
+    private ScheduleStatus scheduleStatus;
 
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     @Builder
-    public ScheduleDto(String title, String description, Date startDate, Date endDate, boolean isRecurring, String recurrenceRule, String scheduleStatus, User userId) {
+    public ScheduleDto(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Boolean isRecurring, String recurrenceRule, ScheduleStatus scheduleStatus, User userId) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
