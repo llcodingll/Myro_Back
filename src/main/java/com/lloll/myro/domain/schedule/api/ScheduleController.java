@@ -2,6 +2,7 @@ package com.lloll.myro.domain.schedule.api;
 
 import com.lloll.myro.domain.schedule.application.ScheduleService;
 import com.lloll.myro.domain.schedule.dto.ScheduleDto;
+import com.lloll.myro.domain.schedule.dto.UpdateScheduleDto;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/{scheduleId}")
-    public void updateScheduleById(@PathVariable Long scheduleId, @Valid @RequestBody ScheduleDto updateRequest) {
+    public void updateScheduleById(@PathVariable Long scheduleId, @Valid @RequestBody UpdateScheduleDto updateRequest) {
         service.updateSchedule(scheduleId, updateRequest);
     }
 

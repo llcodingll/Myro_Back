@@ -34,7 +34,7 @@ public class Schedule {
     private String title;
     private String description;
 
-    private Boolean isRecurring; //반복 일정 여부(선택)
+    private Boolean isRecurring = false; //반복 일정 여부(선택)
     private String recurrenceRule; //반복 일정 규칙(ex: "FREQ=WEEKLY;BYDAY=MO,WE,FR")
 
     @Enumerated(EnumType.STRING)
@@ -49,9 +49,37 @@ public class Schedule {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.isRecurring = isRecurring;
+        this.isRecurring = isRecurring != null ? isRecurring : false;;
         this.recurrenceRule = recurrenceRule;
         this.scheduleStatus = scheduleStatus;
         this.userId = userId;
+    }
+
+    public void changeTitle(String title) {
+        this.title = title;
+    }
+
+    public void changeDescription(String description) {
+        this.description = description;
+    }
+
+    public void changeStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public void changeEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public void changeIsRecurring(Boolean isRecurring) {
+        this.isRecurring = isRecurring;
+    }
+
+    public void changeRecurrenceRule(String recurrenceRule) {
+        this.recurrenceRule = recurrenceRule;
+    }
+
+    public void changeScheduleStatus(ScheduleStatus scheduleStatus) {
+        this.scheduleStatus = scheduleStatus;
     }
 }
