@@ -27,8 +27,8 @@ public class ScheduleController {
     }
 
     @GetMapping()
-    public List<ScheduleDto> searchSchedules(@Valid ScheduleDto searchRequest) {
-        return service.getAllSchedules(searchRequest);
+    public List<ScheduleDto> searchSchedules() {
+        return service.getAllSchedules();
     }
 
     @GetMapping("/{scheduleId}")

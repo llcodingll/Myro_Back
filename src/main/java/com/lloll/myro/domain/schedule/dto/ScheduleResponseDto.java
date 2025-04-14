@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ScheduleDto {
+public class ScheduleResponseDto {
+    @NotNull
+    private Long scheduleId;
     @NotNull
     private String title;
     @NotNull
@@ -23,7 +25,9 @@ public class ScheduleDto {
     private LocalDateTime endDate;
 
     @Builder
-    public ScheduleDto(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Boolean isRecurring, String recurrenceRule, ScheduleStatus scheduleStatus) {
+    public ScheduleResponseDto(Long scheduleId, String title, String description, LocalDateTime startDate,
+                       LocalDateTime endDate, Boolean isRecurring, String recurrenceRule, ScheduleStatus scheduleStatus) {
+        this.scheduleId = scheduleId;
         this.title = title;
         this.description = description;
         this.startDate = startDate;

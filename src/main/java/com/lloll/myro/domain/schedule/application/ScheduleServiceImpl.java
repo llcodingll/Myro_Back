@@ -32,7 +32,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<ScheduleDto> getAllSchedules(ScheduleDto getAllRequest) {
+    public List<ScheduleDto> getAllSchedules() {
         return repository.findAll().stream().map(mapper::toResponse).collect(Collectors.toList());
     }
 
@@ -46,11 +46,10 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     @Transactional
-    public ScheduleDto updateSchedule(Long scheduleId, UpdateScheduleDto updateRequest) {
+    public void updateSchedule(Long scheduleId, UpdateScheduleDto updateRequest) {
         Schedule schedule = repository.findById(scheduleId)
                 .orElseThrow(() -> new RuntimeException("Schedule not found"));
         mapper.updateEntity(schedule, updateRequest);
-        return mapper.toResponse(schedule);
     }
 
     @Override
