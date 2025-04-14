@@ -1,10 +1,10 @@
 package com.lloll.myro.domain.schedule.domain;
 
+import com.lloll.myro.domain.schedule.convert.ScheduleStatusConverter;
 import com.lloll.myro.domain.user.domain.User;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,7 +37,8 @@ public class Schedule {
     private Boolean isRecurring = false; //반복 일정 여부(선택)
     private String recurrenceRule; //반복 일정 규칙(ex: "FREQ=WEEKLY;BYDAY=MO,WE,FR")
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "scheduleStatus")
+    @Convert(converter = ScheduleStatusConverter.class)
     private ScheduleStatus scheduleStatus;
 
     private LocalDateTime startDate;
