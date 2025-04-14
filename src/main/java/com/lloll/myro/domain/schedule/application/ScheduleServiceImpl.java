@@ -22,12 +22,23 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     @Transactional
     public void createSchedule(ScheduleDto createRequest) {
-        ScheduleStatus status = createRequest.getScheduleStatus();
-        if(status == null){
-            status = autoStatus(createRequest.getStartDate(), createRequest.getEndDate());
-        }
+        validateTimeConflict(createRequest.getStartDate(), createRequest.getEndDate());
+
+        ScheduleStatus status = resolveScheduleStatus(createRequest);
         Schedule schedule = mapper.toEntity(createRequest, status);
+
         repository.save(schedule);
+    }
+    private void validateTimeConflict(LocalDateTime startTime, LocalDateTime endTime) {
+        List<Schedule> conflicts = repository.findConflictingSchedules(startTime, endTime);
+        if (!conflicts.isEmpty()) {
+            throw new IllegalArgumentException("A time conflict exists with another schedule on the same date.");
+        }
+    }
+    private ScheduleStatus resolveScheduleStatus(ScheduleDto dto) {
+        return dto.getScheduleStatus() != null
+                ? dto.getScheduleStatus()
+                : autoStatus(dto.getStartDate(), dto.getEndDate());
     }
 
     @Override
