@@ -66,7 +66,10 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     @Transactional
     public void deleteSchedule(Long scheduleId) {
-        repository.deleteById(scheduleId);
+        Schedule schedule = repository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("Schedule not found"));
+        schedule.isDeleted();
+
     }
 
     private ScheduleStatus autoStatus(LocalDateTime startDate, LocalDateTime endDate) {

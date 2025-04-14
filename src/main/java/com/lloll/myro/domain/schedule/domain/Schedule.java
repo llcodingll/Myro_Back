@@ -83,4 +83,9 @@ public class Schedule {
     public void changeScheduleStatus(ScheduleStatus scheduleStatus) {
         this.scheduleStatus = scheduleStatus;
     }
+
+    public void isDeleted() {
+        this.scheduleStatus = ScheduleStatus.DELETED;
+    }
+
 }
