@@ -20,6 +20,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     // DELETED 아닌 모든 일정 조회
     List<Schedule> findByScheduleStatusNot(ScheduleStatus status);
 
-    // DELETED 제외 + 특정 id 일정 조회
-    Optional<Schedule> findByIdAndScheduleStatusNot(Long id, ScheduleStatus status);
+    // DELETED 제외 + 특정 scheduleId 일정 조회
+    Optional<Schedule> findByIdAndScheduleStatusNot(Long scheduleId, ScheduleStatus status);
 }
