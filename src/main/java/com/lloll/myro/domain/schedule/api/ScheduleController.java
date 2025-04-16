@@ -2,6 +2,7 @@ package com.lloll.myro.domain.schedule.api;
 
 import com.lloll.myro.domain.schedule.application.ScheduleService;
 import com.lloll.myro.domain.schedule.dto.ScheduleDto;
+import com.lloll.myro.domain.schedule.dto.ScheduleResponseDto;
 import com.lloll.myro.domain.schedule.dto.UpdateScheduleDto;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -27,18 +28,18 @@ public class ScheduleController {
     }
 
     @GetMapping()
-    public List<ScheduleDto> searchSchedules() {
+    public List<ScheduleResponseDto> searchSchedules() {
         return service.getAllSchedules();
     }
 
     @GetMapping("/{scheduleId}")
-    public ScheduleDto searchScheduleById(@PathVariable Long scheduleId) {
+    public ScheduleResponseDto searchScheduleById(@PathVariable Long scheduleId) {
         return service.getScheduleById(scheduleId);
     }
 
     @PostMapping("/{scheduleId}")
-    public void updateScheduleById(@PathVariable Long scheduleId, @Valid @RequestBody UpdateScheduleDto updateRequest) {
-        service.updateSchedule(scheduleId, updateRequest);
+    public ScheduleResponseDto updateScheduleById(@PathVariable Long scheduleId, @Valid @RequestBody UpdateScheduleDto updateRequest) {
+        return service.updateSchedule(scheduleId, updateRequest);
     }
 
     @DeleteMapping("/{scheduleId}")

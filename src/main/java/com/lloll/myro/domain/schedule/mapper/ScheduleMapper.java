@@ -3,6 +3,7 @@ package com.lloll.myro.domain.schedule.mapper;
 import com.lloll.myro.domain.schedule.domain.Schedule;
 import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
 import com.lloll.myro.domain.schedule.dto.ScheduleDto;
+import com.lloll.myro.domain.schedule.dto.ScheduleResponseDto;
 import com.lloll.myro.domain.schedule.dto.UpdateScheduleDto;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +21,9 @@ public class ScheduleMapper {
                 .build();
     }
 
-    public ScheduleDto toResponse(Schedule schedule) {
-        return ScheduleDto.builder()
+    public ScheduleResponseDto toResponse(Schedule schedule) {
+        return ScheduleResponseDto.builder()
+                .scheduleId(schedule.getId())
                 .title(schedule.getTitle())
                 .description(schedule.getDescription())
                 .startDate(schedule.getStartDate())
@@ -32,7 +34,7 @@ public class ScheduleMapper {
                 .build();
     }
 
-    public void updateEntity(Schedule schedule, UpdateScheduleDto dto) {
+    public ScheduleResponseDto updateEntity(Schedule schedule, UpdateScheduleDto dto) {
         if (dto.getTitle() != null) {
             schedule.changeTitle(dto.getTitle());
         }
@@ -54,6 +56,6 @@ public class ScheduleMapper {
         if (dto.getScheduleStatus() != null) {
             schedule.changeScheduleStatus(dto.getScheduleStatus());
         }
+        return toResponse(schedule);
     }
-
 }

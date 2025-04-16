@@ -4,6 +4,7 @@ import com.lloll.myro.domain.schedule.dao.ScheduleRepository;
 import com.lloll.myro.domain.schedule.domain.Schedule;
 import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
 import com.lloll.myro.domain.schedule.dto.ScheduleDto;
+import com.lloll.myro.domain.schedule.dto.ScheduleResponseDto;
 import com.lloll.myro.domain.schedule.dto.UpdateScheduleDto;
 import com.lloll.myro.domain.schedule.mapper.ScheduleMapper;
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ScheduleServiceImpl implements ScheduleService{
+public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository repository;
     private final ScheduleMapper mapper;
 
@@ -43,13 +44,13 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<ScheduleDto> getAllSchedules() {
+    public List<ScheduleResponseDto> getAllSchedules() {
         return repository.findByScheduleStatusNot(ScheduleStatus.DELETED).stream().map(mapper::toResponse).collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ScheduleDto getScheduleById(Long scheduleId) {
+    public ScheduleResponseDto getScheduleById(Long scheduleId) {
         Schedule schedule = repository.findByIdAndScheduleStatusNot(scheduleId, ScheduleStatus.DELETED)
                 .orElseThrow(() -> new RuntimeException("Schedule not found"));
         return mapper.toResponse(schedule);
@@ -57,10 +58,10 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     @Transactional
-    public void updateSchedule(Long scheduleId, UpdateScheduleDto updateRequest) {
+    public ScheduleResponseDto updateSchedule(Long scheduleId, UpdateScheduleDto updateRequest) {
         Schedule schedule = repository.findByIdAndScheduleStatusNot(scheduleId, ScheduleStatus.DELETED)
                 .orElseThrow(() -> new RuntimeException("Schedule not found"));
-        mapper.updateEntity(schedule, updateRequest);
+        return mapper.updateEntity(schedule, updateRequest);
     }
 
     @Override
@@ -74,9 +75,10 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     private ScheduleStatus autoStatus(LocalDateTime startDate, LocalDateTime endDate) {
         LocalDateTime now = LocalDateTime.now();
-        if(startDate != null && endDate != null){
+        if(startDate != null && endDate != null) {
             if(now.isBefore(startDate)) return ScheduleStatus.PENDING;
-            if(now.isAfter(endDate)) return ScheduleStatus.ACTIVE;
+            if((now.isEqual(startDate) || now.isAfter(startDate)) && (now.isEqual(endDate) || now.isBefore(endDate))) return ScheduleStatus.ACTIVE;
+            if(now.isAfter(endDate)) return ScheduleStatus.COMPLETE;
             return ScheduleStatus.COMPLETE;
         }
         return ScheduleStatus.PENDING;
