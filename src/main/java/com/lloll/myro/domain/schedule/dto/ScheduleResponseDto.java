@@ -1,5 +1,6 @@
 package com.lloll.myro.domain.schedule.dto;
 
+import com.lloll.myro.domain.schedule.domain.RecurrenceRule;
 import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -18,7 +19,11 @@ public class ScheduleResponseDto {
     private String description;
 
     private Boolean isRecurring;
-    private String recurrenceRule;
+    private RecurrenceRule recurrenceRule;
+    private String customRecurrenceRule;
+    private LocalDateTime startRecurrenceDate;
+    private LocalDateTime endRecurrenceDate;
+
     private ScheduleStatus scheduleStatus;
 
     private LocalDateTime startDate;
@@ -26,7 +31,7 @@ public class ScheduleResponseDto {
 
     @Builder
     public ScheduleResponseDto(Long scheduleId, String title, String description, LocalDateTime startDate,
-                       LocalDateTime endDate, Boolean isRecurring, String recurrenceRule, ScheduleStatus scheduleStatus) {
+                               LocalDateTime endDate, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus) {
         this.scheduleId = scheduleId;
         this.title = title;
         this.description = description;
@@ -34,6 +39,9 @@ public class ScheduleResponseDto {
         this.endDate = endDate;
         this.isRecurring = isRecurring;
         this.recurrenceRule = recurrenceRule;
+        this.customRecurrenceRule = customRecurrenceRule;
+        this.startRecurrenceDate = startRecurrenceDate;
+        this.endRecurrenceDate = endRecurrenceDate;
         this.scheduleStatus = scheduleStatus;
     }
 }

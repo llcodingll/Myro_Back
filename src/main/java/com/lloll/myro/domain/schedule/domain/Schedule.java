@@ -5,6 +5,8 @@ import com.lloll.myro.domain.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,20 +28,24 @@ public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "scheduleId")
+    @Column(name = "schedule_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User userId;
 
     private String title;
     private String description;
 
     private Boolean isRecurring = false; //반복 일정 여부(선택)
-    private String recurrenceRule; //반복 일정 규칙(ex: "FREQ=WEEKLY;BYDAY=MO,WE,FR")
+    @Enumerated(EnumType.STRING)
+    private RecurrenceRule recurrenceRule; //반복 일정 규칙(ex: "FREQ=WEEKLY;BYDAY=MO,WE,FR")
+    private String customRecurrenceRule; //반복 일정 사용자 커스텀
+    private LocalDateTime startRecurrenceDate; //반복 일정 시작
+    private LocalDateTime endRecurrenceDate; //반복 일정 끝
 
-    @Column(name = "scheduleStatus")
+    @Column(name = "schedule_status")
     @Convert(converter = ScheduleStatusConverter.class)
     private ScheduleStatus scheduleStatus;
 
@@ -47,13 +53,16 @@ public class Schedule {
     private LocalDateTime endDate;
 
     @Builder
-    public Schedule(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Boolean isRecurring, String recurrenceRule, ScheduleStatus scheduleStatus, User userId) {
+    public Schedule(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus, User userId) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.isRecurring = isRecurring != null ? isRecurring : false;;
         this.recurrenceRule = recurrenceRule;
+        this.customRecurrenceRule = customRecurrenceRule;
+        this.startRecurrenceDate = startRecurrenceDate;
+        this.endRecurrenceDate = endRecurrenceDate;
         this.scheduleStatus = scheduleStatus;
         this.userId = userId;
     }
@@ -78,8 +87,20 @@ public class Schedule {
         this.isRecurring = isRecurring;
     }
 
-    public void changeRecurrenceRule(String recurrenceRule) {
+    public void changeRecurrenceRule(RecurrenceRule recurrenceRule) {
         this.recurrenceRule = recurrenceRule;
+    }
+
+    public void changeCustomRecurrenceRule(String customRecurrenceRule) {
+        this.customRecurrenceRule = customRecurrenceRule;
+    }
+
+    public void changeStartRecurrenceDate(LocalDateTime startRecurrenceDate) {
+        this.startRecurrenceDate = startRecurrenceDate;
+    }
+
+    public void changeEndRecurrenceDate(LocalDateTime endRecurrenceDate) {
+        this.endRecurrenceDate = endRecurrenceDate;
     }
 
     public void changeScheduleStatus(ScheduleStatus scheduleStatus) {
