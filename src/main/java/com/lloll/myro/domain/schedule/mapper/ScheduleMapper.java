@@ -57,10 +57,10 @@ public class ScheduleMapper {
             schedule.changeCustomRecurrenceRule(dto.getCustomRecurrenceRule());
         }
         if(dto.getStartRecurrenceDate() != null) {
-            schedule.changeStartDate(dto.getStartRecurrenceDate());
+            schedule.changeStartRecurrenceDate(dto.getStartRecurrenceDate());
         }
         if(dto.getEndRecurrenceDate() != null) {
-            schedule.changeEndDate(dto.getEndRecurrenceDate());
+            schedule.changeEndRecurrenceDate(dto.getEndRecurrenceDate());
         }
         if (dto.getScheduleStatus() != null) {
             schedule.changeScheduleStatus(dto.getScheduleStatus());
