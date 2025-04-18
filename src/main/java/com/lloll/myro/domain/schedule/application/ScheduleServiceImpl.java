@@ -1,6 +1,7 @@
 package com.lloll.myro.domain.schedule.application;
 
 import com.lloll.myro.domain.schedule.dao.ScheduleRepository;
+import com.lloll.myro.domain.schedule.domain.RecurrenceRule;
 import com.lloll.myro.domain.schedule.domain.Schedule;
 import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
 import com.lloll.myro.domain.schedule.dto.ScheduleDto;
@@ -23,23 +24,36 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public void createSchedule(ScheduleDto createRequest) {
-        validateTimeConflict(createRequest.getStartDate(), createRequest.getEndDate());
+//        validateTimeConflict(createRequest.getStartDate(), createRequest.getEndDate());
 
         ScheduleStatus status = resolveScheduleStatus(createRequest);
         Schedule schedule = mapper.toEntity(createRequest, status);
 
+        if (schedule.getRecurrenceRule() == RecurrenceRule.CUSTOM) {
+            applyCustomRecurrenceRule(schedule, createRequest.getCustomRecurrenceRule());
+        }
+
         repository.save(schedule);
     }
-    private void validateTimeConflict(LocalDateTime startTime, LocalDateTime endTime) {
-        List<Schedule> conflicts = repository.findConflictingSchedules(startTime, endTime);
-        if (!conflicts.isEmpty()) {
-            throw new IllegalArgumentException("A time conflict exists with another schedule on the same date.");
-        }
-    }
+    //이거 같은 날짜 내 같은 시간으로 바꿔야 함 => 현재 요청 시 같은 날짜에 등록이 안 되는 문제 발생
+    //같은 날짜 내에서 같은 시간에 해당하면 등록이 안 되도록 수정 필요
+//    private void validateTimeConflict(LocalDateTime startTime, LocalDateTime endTime) {
+//        List<Schedule> conflicts = repository.findConflictingSchedules(startTime, endTime);
+//        if (!conflicts.isEmpty()) {
+//            throw new IllegalArgumentException("A time conflict exists with another schedule on the same date.");
+//        }
+//    }
     private ScheduleStatus resolveScheduleStatus(ScheduleDto dto) {
         return dto.getScheduleStatus() != null
                 ? dto.getScheduleStatus()
                 : autoStatus(dto.getStartDate(), dto.getEndDate());
+    }
+    private void applyCustomRecurrenceRule(Schedule schedule, String customRecurrenceRule) {
+        if (customRecurrenceRule == null || customRecurrenceRule.isBlank()) {
+            throw new IllegalArgumentException("Custom recurrence rule must be provided for CUSTOM type.");
+        }
+
+        schedule.changeCustomRecurrenceRule(customRecurrenceRule);
     }
 
     @Override

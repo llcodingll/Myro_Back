@@ -2,6 +2,7 @@ package com.lloll.myro.domain.schedule.dto;
 
 import com.lloll.myro.domain.schedule.domain.RecurrenceRule;
 import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
+import com.lloll.myro.domain.user.domain.User;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ScheduleDto {
+    private User userId; //반복 일정 관련 에러 빙지를 위해 임의로 추가한 코드(수정 필요!!)
     @NotNull
     private String title;
     @NotNull
