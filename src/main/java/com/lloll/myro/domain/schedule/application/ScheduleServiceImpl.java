@@ -9,6 +9,7 @@ import com.lloll.myro.domain.schedule.dto.ScheduleResponseDto;
 import com.lloll.myro.domain.schedule.dto.UpdateScheduleDto;
 import com.lloll.myro.domain.schedule.mapper.ScheduleMapper;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public void createSchedule(ScheduleDto createRequest) {
-//        validateTimeConflict(createRequest.getStartDate(), createRequest.getEndDate());
+        validateTimeConflict(createRequest.getStartDate(), createRequest.getEndDate());
 
         ScheduleStatus status = resolveScheduleStatus(createRequest);
         Schedule schedule = mapper.toEntity(createRequest, status);
@@ -35,14 +36,39 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         repository.save(schedule);
     }
-    //이거 같은 날짜 내 같은 시간으로 바꿔야 함 => 현재 요청 시 같은 날짜에 등록이 안 되는 문제 발생
-    //같은 날짜 내에서 같은 시간에 해당하면 등록이 안 되도록 수정 필요
-//    private void validateTimeConflict(LocalDateTime startTime, LocalDateTime endTime) {
-//        List<Schedule> conflicts = repository.findConflictingSchedules(startTime, endTime);
-//        if (!conflicts.isEmpty()) {
-//            throw new IllegalArgumentException("A time conflict exists with another schedule on the same date.");
-//        }
-//    }
+
+    private void validateTimeConflict(LocalDateTime startTime, LocalDateTime endTime) {
+        // 시간이 없으면 충돌 검사 안 함 (날짜만 있는 일정은 통과)
+        if (isAllDaySchedule(startTime, endTime)) {
+            return;
+        }
+
+        // 날짜만 같고 시간이 겹치는 일정이 있는지 확인
+        List<Schedule> sameDateSchedules = repository.findTimeConflictsOnly(startTime, endTime);
+
+        boolean hasTimeConflict = sameDateSchedules.stream()
+                .filter(this::hasTimeInfo) // 시간 정보가 있는 일정만 비교
+                .anyMatch(s -> isTimeOverlapping(startTime.toLocalTime(), endTime.toLocalTime(),
+                        s.getStartDate().toLocalTime(), s.getEndDate().toLocalTime()));
+
+        if (hasTimeConflict) {
+            throw new IllegalArgumentException("A time conflict exists with another schedule on the same time.");
+        }
+    }
+
+    private boolean isAllDaySchedule(LocalDateTime start, LocalDateTime end) {
+        return start.toLocalTime().equals(LocalTime.MIN) && end.toLocalTime().equals(LocalTime.MIN);
+    }
+
+    private boolean hasTimeInfo(Schedule schedule) {
+        return !schedule.getStartDate().toLocalTime().equals(LocalTime.MIN)
+                || !schedule.getEndDate().toLocalTime().equals(LocalTime.MIN);
+    }
+
+    private boolean isTimeOverlapping(LocalTime start1, LocalTime end1, LocalTime start2, LocalTime end2) {
+        return !start1.isAfter(end2) && !end1.isBefore(start2);
+    }
+
     private ScheduleStatus resolveScheduleStatus(ScheduleDto dto) {
         return dto.getScheduleStatus() != null
                 ? dto.getScheduleStatus()
