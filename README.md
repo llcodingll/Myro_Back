@@ -53,7 +53,7 @@
     - 기존 일정 정보 수정 (제목, 시간, 태그, 메모 등)
 - [x]  **일정 삭제 (Delete Schedule)**
     - 일정 삭제 요청 후 논리 삭제(Soft Delete) 처리
-- [ ]  **반복 일정 (Recurring Schedule) [Option]**
+- [x]  **반복 일정 (Recurring Schedule) [Option]**
     - 매일, 매주, 매월 반복되는 일정 관리
     - 특정 기간 동안만 반복 설정 가능
 
