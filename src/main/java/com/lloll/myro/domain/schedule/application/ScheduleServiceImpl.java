@@ -30,7 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         ScheduleStatus status = resolveScheduleStatus(createRequest);
         Schedule schedule = mapper.toEntity(createRequest, status);
 
-        if (schedule.getRecurrenceRule() == RecurrenceRule.CUSTOM) {
+        if (schedule.getRecurrenceRule() != null && schedule.getRecurrenceRule() == RecurrenceRule.CUSTOM) {
             applyCustomRecurrenceRule(schedule, createRequest.getCustomRecurrenceRule());
         }
 
@@ -38,16 +38,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     private void validateTimeConflict(LocalDateTime startTime, LocalDateTime endTime) {
-        // 시간이 없으면 충돌 검사 안 함 (날짜만 있는 일정은 통과)
         if (isAllDaySchedule(startTime, endTime)) {
             return;
         }
 
-        // 날짜만 같고 시간이 겹치는 일정이 있는지 확인
         List<Schedule> sameDateSchedules = repository.findTimeConflictsOnly(startTime, endTime);
 
         boolean hasTimeConflict = sameDateSchedules.stream()
-                .filter(this::hasTimeInfo) // 시간 정보가 있는 일정만 비교
+                .filter(this::hasTimeInfo)
                 .anyMatch(s -> isTimeOverlapping(startTime.toLocalTime(), endTime.toLocalTime(),
                         s.getStartDate().toLocalTime(), s.getEndDate().toLocalTime()));
 
