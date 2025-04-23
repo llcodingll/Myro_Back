@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/tags")
 @RequiredArgsConstructor
-public class ScheduleTagController {
+public class TagController {
 
     private final TagRepository tagRepository;
 
