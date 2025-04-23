@@ -2,10 +2,10 @@ package com.lloll.myro.domain.schedule.dto;
 
 import com.lloll.myro.domain.schedule.domain.RecurrenceRule;
 import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
-import com.lloll.myro.domain.schedule.domain.ScheduleTag;
 import com.lloll.myro.domain.user.domain.User;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ public class ScheduleDto {
     @NotNull
     private String description;
 
-    private ScheduleTag scheduleTagId;
+    private List<String> tags;
 
     private Boolean isRecurring;
     private RecurrenceRule recurrenceRule;
@@ -32,10 +32,9 @@ public class ScheduleDto {
     private LocalDateTime endDate;
 
     @Builder
-    public ScheduleDto(String title, String description, ScheduleTag scheduleTagId, LocalDateTime startDate, LocalDateTime endDate, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus) {
+    public ScheduleDto(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus) {
         this.title = title;
         this.description = description;
-        this.scheduleTagId = scheduleTagId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.isRecurring = isRecurring;
