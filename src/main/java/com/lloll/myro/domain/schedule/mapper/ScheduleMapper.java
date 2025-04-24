@@ -31,6 +31,7 @@ public class ScheduleMapper {
                 .isRecurring(schedule.getIsRecurring())
                 .recurrenceRule(schedule.getRecurrenceRule())
                 .scheduleStatus(schedule.getScheduleStatus())
+                .tagNames(schedule.getTagNames())
                 .build();
     }
 

@@ -5,7 +5,6 @@ import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
 import com.lloll.myro.domain.user.domain.User;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +17,6 @@ public class ScheduleDto {
     private String title;
     @NotNull
     private String description;
-
-    private List<String> tags;
 
     private Boolean isRecurring;
     private RecurrenceRule recurrenceRule;

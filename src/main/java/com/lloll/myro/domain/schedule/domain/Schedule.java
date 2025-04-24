@@ -19,6 +19,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,6 +52,12 @@ public class Schedule {
 
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
     private List<ScheduleTag> scheduleTags = new ArrayList<>();
+    public List<String> getTagNames() {
+        return this.scheduleTags.stream()
+                .map(scheduleTag -> scheduleTag.getTag().getName())
+                .collect(Collectors.toList());
+    }
+
 
     @Column(name = "schedule_status")
     @Convert(converter = ScheduleStatusConverter.class)

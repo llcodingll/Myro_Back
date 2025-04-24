@@ -4,6 +4,7 @@ import com.lloll.myro.domain.schedule.domain.RecurrenceRule;
 import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,13 +26,15 @@ public class ScheduleResponseDto {
     private LocalDateTime endRecurrenceDate;
 
     private ScheduleStatus scheduleStatus;
+    private List<String> tagNames;
+
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
     @Builder
     public ScheduleResponseDto(Long scheduleId, String title, String description, LocalDateTime startDate,
-                               LocalDateTime endDate, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus) {
+                               LocalDateTime endDate, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus, List<String> tagNames) {
         this.scheduleId = scheduleId;
         this.title = title;
         this.description = description;
@@ -43,5 +46,6 @@ public class ScheduleResponseDto {
         this.startRecurrenceDate = startRecurrenceDate;
         this.endRecurrenceDate = endRecurrenceDate;
         this.scheduleStatus = scheduleStatus;
+        this.tagNames = tagNames;
     }
 }
