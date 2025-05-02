@@ -2,7 +2,6 @@ package com.lloll.myro.domain.schedule.api;
 
 import com.lloll.myro.domain.schedule.dao.TagRepository;
 import com.lloll.myro.domain.schedule.domain.Tag;
-import com.lloll.myro.domain.schedule.dto.TagDto;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +22,9 @@ public class TagController {
     private final TagRepository tagRepository;
 
     @PostMapping()
-    public Tag createTag(@RequestBody TagDto request) {
-        if (tagRepository.findByName(request.getTagName()).isPresent()) {
-            throw new IllegalArgumentException("Tag already exists");
-        }
-        Tag tag = new Tag(request.getTagName());
-        return tagRepository.save(tag);
+    public void createTag(@RequestBody String request) {
+        Tag tag = new Tag(request);
+        tagRepository.save(tag);
     }
 
     @GetMapping()
@@ -36,22 +32,22 @@ public class TagController {
         return tagRepository.findAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Tag getTagById(@PathVariable Long id) {
         return tagRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Tag not found"));
     }
 
     @Transactional
-    @PutMapping("{id}")
-    public Tag updateTag(@PathVariable Long id, @RequestBody TagDto request) {
+    @PutMapping("/{id}")
+    public Tag updateTag(@PathVariable Long id, @RequestBody String request) {
         Tag existingTag = tagRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Tag not found"));
-        existingTag.updateName(request.getTagName());
+        existingTag.updateName(request);
         return existingTag;
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void deleteTag(@PathVariable Long id) {
         Tag tag = tagRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Tag not found"));
