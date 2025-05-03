@@ -22,10 +22,14 @@ public class ScheduleTag {
 
     @ManyToOne
     @JoinColumn(name = "scheduleId")
-    private Schedule scheduleId;
+    private Schedule schedule;
 
     @ManyToOne
     @JoinColumn(name = "tagId")
-    private Tag tagId;
+    private Tag tag;
 
+    public ScheduleTag(Schedule schedule, Tag tag) {
+        this.schedule = schedule;
+        this.tag = tag;
+    }
 }

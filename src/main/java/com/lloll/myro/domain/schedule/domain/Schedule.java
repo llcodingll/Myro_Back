@@ -2,6 +2,7 @@ package com.lloll.myro.domain.schedule.domain;
 
 import com.lloll.myro.domain.schedule.convert.ScheduleStatusConverter;
 import com.lloll.myro.domain.user.domain.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -13,8 +14,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,6 +50,15 @@ public class Schedule {
     private LocalDateTime startRecurrenceDate; //반복 일정 시작
     private LocalDateTime endRecurrenceDate; //반복 일정 끝
 
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
+    private List<ScheduleTag> scheduleTags = new ArrayList<>();
+    public List<String> getTagNames() {
+        return this.scheduleTags.stream()
+                .map(scheduleTag -> scheduleTag.getTag().getName())
+                .collect(Collectors.toList());
+    }
+
+
     @Column(name = "schedule_status")
     @Convert(converter = ScheduleStatusConverter.class)
     private ScheduleStatus scheduleStatus;
@@ -65,6 +79,11 @@ public class Schedule {
         this.endRecurrenceDate = endRecurrenceDate;
         this.scheduleStatus = scheduleStatus;
         this.userId = userId;
+    }
+
+    public void addTag(Tag tag) {
+        ScheduleTag scheduleTag = new ScheduleTag(this, tag);
+        this.scheduleTags.add(scheduleTag);
     }
 
     public void changeTitle(String title) {
