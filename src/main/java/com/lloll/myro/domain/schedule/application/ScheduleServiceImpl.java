@@ -1,9 +1,11 @@
 package com.lloll.myro.domain.schedule.application;
 
 import com.lloll.myro.domain.schedule.dao.ScheduleRepository;
+import com.lloll.myro.domain.schedule.dao.TagRepository;
 import com.lloll.myro.domain.schedule.domain.RecurrenceRule;
 import com.lloll.myro.domain.schedule.domain.Schedule;
 import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
+import com.lloll.myro.domain.schedule.domain.Tag;
 import com.lloll.myro.domain.schedule.dto.ScheduleDto;
 import com.lloll.myro.domain.schedule.dto.ScheduleResponseDto;
 import com.lloll.myro.domain.schedule.dto.UpdateScheduleDto;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository repository;
+    private final TagRepository tagRepository;
     private final ScheduleMapper mapper;
 
     @Override
@@ -34,7 +37,19 @@ public class ScheduleServiceImpl implements ScheduleService {
             applyCustomRecurrenceRule(schedule, createRequest.getCustomRecurrenceRule());
         }
 
+        applyTagsToSchedule(schedule, createRequest.getTagNames());
+
         repository.save(schedule);
+    }
+
+    private void applyTagsToSchedule(Schedule schedule, List<String> tagNames) {
+        if (tagNames == null || tagNames.isEmpty()) return;
+
+        for (String name : tagNames) {
+            Tag tag = tagRepository.findByName(name)
+                    .orElseGet(() -> tagRepository.save(new Tag(name)));
+            schedule.addTag(tag);
+        }
     }
 
     private void validateTimeConflict(LocalDateTime startTime, LocalDateTime endTime) {
