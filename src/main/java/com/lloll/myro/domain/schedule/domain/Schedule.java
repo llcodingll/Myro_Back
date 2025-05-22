@@ -1,7 +1,7 @@
 package com.lloll.myro.domain.schedule.domain;
 
 import com.lloll.myro.domain.schedule.convert.ScheduleStatusConverter;
-import com.lloll.myro.domain.user.domain.User;
+import com.lloll.myro.domain.account.user.domain.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

@@ -1,6 +1,6 @@
-package com.lloll.myro.domain.user.application;
+package com.lloll.myro.domain.account.user.application;
 
-import com.lloll.myro.domain.user.dao.UserRepository;
+import com.lloll.myro.domain.account.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

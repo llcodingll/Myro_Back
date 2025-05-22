@@ -1,6 +1,6 @@
-package com.lloll.myro.domain.user.api;
+package com.lloll.myro.domain.account.user.api;
 
-import com.lloll.myro.domain.user.application.UserServiceImpl;
+import com.lloll.myro.domain.account.user.application.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;

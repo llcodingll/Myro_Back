@@ -2,7 +2,7 @@ package com.lloll.myro.domain.schedule.dto;
 
 import com.lloll.myro.domain.schedule.domain.RecurrenceRule;
 import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
-import com.lloll.myro.domain.user.domain.User;
+import com.lloll.myro.domain.account.user.domain.User;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,5 +1,6 @@
-package com.lloll.myro.domain.user.domain;
+package com.lloll.myro.domain.account.user.domain;
 
+import com.lloll.myro.domain.account.domain.Role;
 import com.lloll.myro.domain.eventLog.domain.EventLog;
 import com.lloll.myro.domain.notification.domain.Notification;
 import com.lloll.myro.domain.schedule.domain.Schedule;
@@ -39,11 +40,11 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
     @NotNull
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @NotNull
     private String nickname;
