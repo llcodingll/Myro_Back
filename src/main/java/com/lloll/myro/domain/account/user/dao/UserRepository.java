@@ -1,4 +1,4 @@
-package com.lloll.myro.domain.account.dao;
+package com.lloll.myro.domain.account.user.dao;
 
 import com.lloll.myro.domain.account.user.domain.User;
 import java.util.Optional;

@@ -1,6 +1,7 @@
 package com.lloll.myro.domain.account.user.domain;
 
 import com.lloll.myro.domain.account.domain.Role;
+import com.lloll.myro.domain.account.user.dto.RegisterUserRequest;
 import com.lloll.myro.domain.eventLog.domain.EventLog;
 import com.lloll.myro.domain.notification.domain.Notification;
 import com.lloll.myro.domain.schedule.domain.Schedule;
@@ -20,6 +21,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Getter
@@ -27,6 +29,8 @@ import lombok.Setter;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
+
+    static BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,4 +72,16 @@ public class User {
     @OneToMany
     private List<EventLog> logs;
 
+    public User(RegisterUserRequest RegisterUserRequest) {
+        this.email = RegisterUserRequest.getEmail();
+        this.password = bCryptPasswordEncoder.encode(RegisterUserRequest.getPassword());
+        this.name = RegisterUserRequest.getName();
+        this.nickname = RegisterUserRequest.getNickname();
+        this.gender = RegisterUserRequest.getGender();
+        this.birthDate = RegisterUserRequest.getBirthDate();
+        this.createdAt = LocalDate.now();
+        this.updatedAt = LocalDate.now();
+        this.role = Role.USER;
+        this.isBilling = false;
+    }
 }
