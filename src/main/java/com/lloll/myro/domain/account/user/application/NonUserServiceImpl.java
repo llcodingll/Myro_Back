@@ -31,6 +31,8 @@ public class NonUserServiceImpl implements NonUserService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일의 사용자가 존재하지 않습니다."));
 
+        validateUser(user, request.getPassword());
+
         Token accessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_MINUTE_TIME);
 
         return new LoginResponse(accessToken);
@@ -42,5 +44,18 @@ public class NonUserServiceImpl implements NonUserService {
             throw new IllegalStateException("이미 존재하는 이메일입니다.");
         });
         return userRepository.save(new User(request));
+    }
+
+    private void validateUser(User user, String rawPassword) {
+        if (user.getDeletedAt() != null) {
+            throw new IllegalStateException("정지된 사용자입니다. 관리자에게 문의하세요.");
+        }
+        if (!isPasswordMatch(rawPassword, user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
+    public boolean isPasswordMatch(String rawPassword, String encodedPassword) {
+        return bCryptPasswordEncoder.matches(rawPassword, encodedPassword);
     }
 }
