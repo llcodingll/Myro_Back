@@ -8,7 +8,6 @@ import com.lloll.myro.domain.account.user.dto.UserBillingResponse;
 import com.lloll.myro.domain.account.user.dto.UserMyPageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,21 +17,29 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     @Value("${jwt.ACCESS_TOKEN_MINUTE_TIME}")
-    private int ACCESS_TOKEN_MINUTE_TIME;
 
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
 
     @Override
     public User updateUser(UpdateUserRequest request, String token) {
-        return null;
+        Long userId = tokenProvider.getUserIdFromToken(token);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("토큰에 대한 사용자를 찾을 수 없습니다. " + token));
+
+        if (user.getDeletedAt() != null) {
+            throw new IllegalStateException("정지된 사용자입니다. 관리자에게 문의하세요.");
+        }
+
+        user.updateUserDetails(request);
+        return userRepository.save(user);
     }
 
     @Override
     public void deleteUser(String token) {
-
+        Long userId = tokenProvider.getUserIdFromToken(token);
+        userRepository.deleteById(userId);
     }
 
     @Override
@@ -42,11 +49,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserBillingResponse billingUser(String token) {
-        return null;
+        Long userId = tokenProvider.getUserIdFromToken(token);
+
+        return userRepository.findById(userId).map(user -> new UserBillingResponse(user.getIsBilling()))
+                .orElseThrow(() -> new IllegalArgumentException("토큰에 대한 사용자를 찾을 수 없습니다. " + token));
     }
 
     @Override
     public UserMyPageResponse getUserInfo(String token) {
-        return null;
+        Long userIdFromToken = tokenProvider.getUserIdFromToken(token);
+        User user = userRepository.findById(userIdFromToken).orElseThrow();
+        return new UserMyPageResponse(user);
     }
 }

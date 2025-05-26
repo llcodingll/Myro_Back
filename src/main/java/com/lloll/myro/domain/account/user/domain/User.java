@@ -2,6 +2,7 @@ package com.lloll.myro.domain.account.user.domain;
 
 import com.lloll.myro.domain.account.domain.Role;
 import com.lloll.myro.domain.account.user.dto.RegisterUserRequest;
+import com.lloll.myro.domain.account.user.dto.UpdateUserRequest;
 import com.lloll.myro.domain.eventLog.domain.EventLog;
 import com.lloll.myro.domain.notification.domain.Notification;
 import com.lloll.myro.domain.schedule.domain.Schedule;
@@ -83,5 +84,21 @@ public class User {
         this.updatedAt = LocalDate.now();
         this.role = Role.USER;
         this.isBilling = false;
+    }
+
+    public void updateUserDetails(UpdateUserRequest request) {
+        if (request.getName() != null) {
+            this.name = request.getName();
+        }
+        if (request.getNickname() != null) {
+            this.nickname = request.getNickname();
+        }
+        if (request.getGender() != null) {
+            this.gender = request.getGender();
+        }
+        if (request.getBirthDate() != null) {
+            this.birthDate = request.getBirthDate();
+        }
+        this.updatedAt = LocalDate.now();
     }
 }
