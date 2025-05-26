@@ -1,4 +1,4 @@
-package com.lloll.myro.domain.account.user.dto;
+package com.lloll.myro.domain.account.user.application.response;
 
 import com.lloll.myro.domain.account.jwt.Token;
 import lombok.Getter;

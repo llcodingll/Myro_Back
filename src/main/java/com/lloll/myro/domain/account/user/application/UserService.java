@@ -1,9 +1,9 @@
 package com.lloll.myro.domain.account.user.application;
 
 import com.lloll.myro.domain.account.user.domain.User;
-import com.lloll.myro.domain.account.user.dto.UpdateUserRequest;
-import com.lloll.myro.domain.account.user.dto.UserBillingResponse;
-import com.lloll.myro.domain.account.user.dto.UserMyPageResponse;
+import com.lloll.myro.domain.account.user.application.request.UpdateUserRequest;
+import com.lloll.myro.domain.account.user.application.response.UserBillingResponse;
+import com.lloll.myro.domain.account.user.application.response.UserMyPageResponse;
 
 public interface UserService {
 

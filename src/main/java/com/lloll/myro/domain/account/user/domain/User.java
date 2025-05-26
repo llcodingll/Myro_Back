@@ -1,8 +1,8 @@
 package com.lloll.myro.domain.account.user.domain;
 
 import com.lloll.myro.domain.account.domain.Role;
-import com.lloll.myro.domain.account.user.dto.RegisterUserRequest;
-import com.lloll.myro.domain.account.user.dto.UpdateUserRequest;
+import com.lloll.myro.domain.account.user.application.request.RegisterUserRequest;
+import com.lloll.myro.domain.account.user.application.request.UpdateUserRequest;
 import com.lloll.myro.domain.eventLog.domain.EventLog;
 import com.lloll.myro.domain.notification.domain.Notification;
 import com.lloll.myro.domain.schedule.domain.Schedule;
