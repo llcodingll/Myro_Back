@@ -24,11 +24,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Page<User> findAll(Pageable pageable) {
-        return null;
+        return userService.findAll(pageable);
     }
 
     @Override
     public Token getUserToken(Long userId) {
-        return null;
+        return userService.getUserToken(userId);
     }
 }

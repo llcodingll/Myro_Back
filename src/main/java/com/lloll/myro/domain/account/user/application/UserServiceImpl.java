@@ -1,13 +1,16 @@
 package com.lloll.myro.domain.account.user.application;
 
 import com.lloll.myro.domain.account.dao.UserRepository;
+import com.lloll.myro.domain.account.jwt.Token;
 import com.lloll.myro.domain.account.jwt.TokenProvider;
-import com.lloll.myro.domain.account.user.domain.User;
 import com.lloll.myro.domain.account.user.application.request.UpdateUserRequest;
 import com.lloll.myro.domain.account.user.application.response.UserBillingResponse;
 import com.lloll.myro.domain.account.user.application.response.UserMyPageResponse;
+import com.lloll.myro.domain.account.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     @Value("${jwt.ACCESS_TOKEN_MINUTE_TIME}")
+    private int ACCESS_TOKEN_MINUTE_TIME;
 
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
@@ -60,5 +64,16 @@ public class UserServiceImpl implements UserService {
         Long userIdFromToken = tokenProvider.getUserIdFromToken(token);
         User user = userRepository.findById(userIdFromToken).orElseThrow();
         return new UserMyPageResponse(user);
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    @Override
+    public Token getUserToken(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        return tokenProvider.generateToken(user, ACCESS_TOKEN_MINUTE_TIME);
     }
 }
