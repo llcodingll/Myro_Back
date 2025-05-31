@@ -7,6 +7,7 @@ import com.lloll.myro.domain.account.user.application.request.UpdateUserRequest;
 import com.lloll.myro.domain.account.user.application.response.UserBillingResponse;
 import com.lloll.myro.domain.account.user.application.response.UserMyPageResponse;
 import com.lloll.myro.domain.account.user.domain.User;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -75,5 +76,15 @@ public class UserServiceImpl implements UserService {
     public Token getUserToken(Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
         return tokenProvider.generateToken(user, ACCESS_TOKEN_MINUTE_TIME);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(null);
+    }
+
+    @Override
+    public List<Object[]> getUserBillingCount() {
+        return userRepository.countUserByBilling();
     }
 }

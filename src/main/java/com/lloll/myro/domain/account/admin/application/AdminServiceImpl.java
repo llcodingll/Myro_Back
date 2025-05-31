@@ -5,6 +5,7 @@ import com.lloll.myro.domain.account.jwt.Token;
 import com.lloll.myro.domain.account.user.application.UserServiceImpl;
 import com.lloll.myro.domain.account.user.domain.User;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -30,5 +31,15 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Token getUserToken(Long userId) {
         return userService.getUserToken(userId);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userService.findByEmail(email);
+    }
+
+    @Override
+    public List<Object[]> getUserBillingCount() {
+        return userService.getUserBillingCount();
     }
 }
