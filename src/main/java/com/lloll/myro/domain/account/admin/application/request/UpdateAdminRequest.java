@@ -3,7 +3,6 @@ package com.lloll.myro.domain.account.admin.application.request;
 import com.lloll.myro.domain.account.domain.Role;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
@@ -14,8 +13,7 @@ public class UpdateAdminRequest {
 
     private String adminCode;
 
-    @Pattern(regexp = "^[가-힣]+$", message = "이름은 한글만 입력 가능합니다.")
-    @Size(max = 5)
+    @Pattern(regexp = "^[가-힣a-zA-Z]+$", message = "Name can only be entered in Korean or English.")
     private String name;
 
     private Role role;

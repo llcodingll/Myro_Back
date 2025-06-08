@@ -1,13 +1,21 @@
 package com.lloll.myro.domain.account.user.application;
 
-import com.lloll.myro.domain.account.dao.UserRepository;
+import com.lloll.myro.domain.account.jwt.RefreshTokenRepository;
 import com.lloll.myro.domain.account.jwt.Token;
 import com.lloll.myro.domain.account.jwt.TokenProvider;
+import com.lloll.myro.domain.account.jwt.domain.RefreshToken;
 import com.lloll.myro.domain.account.user.application.request.UpdateUserRequest;
+import com.lloll.myro.domain.account.user.application.response.LoginResponse;
 import com.lloll.myro.domain.account.user.application.response.UserBillingResponse;
 import com.lloll.myro.domain.account.user.application.response.UserMyPageResponse;
+import com.lloll.myro.domain.account.user.dao.UserActivityLogRepository;
+import com.lloll.myro.domain.account.user.dao.UserRepository;
 import com.lloll.myro.domain.account.user.domain.User;
+import com.lloll.myro.domain.account.user.domain.UserActivityLog;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -23,8 +31,12 @@ public class UserServiceImpl implements UserService {
     @Value("${jwt.ACCESS_TOKEN_MINUTE_TIME}")
     private int ACCESS_TOKEN_MINUTE_TIME;
 
+    @Value("${jwt.REFRESH_TOKEN_MINUTE_TIME}")
+    private int REFRESH_TOKEN_MINUTE_TIME;
+
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public User updateUser(UpdateUserRequest request, String token) {
@@ -44,12 +56,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String token) {
         Long userId = tokenProvider.getUserIdFromToken(token);
+        refreshTokenRepository.deleteByUserId(userId);
         userRepository.deleteById(userId);
     }
 
     @Override
     public void logoutUser(String token) {
-
+        refreshTokenRepository.deleteByRefreshToken(token);
     }
 
     @Override
@@ -86,5 +99,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Object[]> getUserBillingCount() {
         return userRepository.countUserByBilling();
+    }
+
+    public LoginResponse refreshToken(String refreshToken) {
+        refreshTokenRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리프레시 토큰입니다."));
+
+        refreshTokenRepository.deleteByRefreshToken(refreshToken);
+
+        User user = userRepository.findById(tokenProvider.getUserIdFromToken(refreshToken))
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+
+        Token newAccessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_MINUTE_TIME);
+        Token newRefreshToken = tokenProvider.generateToken(user, REFRESH_TOKEN_MINUTE_TIME);
+
+        refreshTokenRepository.save(new RefreshToken(user, newRefreshToken.getToken(),
+                LocalDateTime.now().plusMinutes(REFRESH_TOKEN_MINUTE_TIME)));
+        System.out.println(new LoginResponse(newAccessToken, newRefreshToken));
+        return new LoginResponse(newAccessToken, newRefreshToken);
+    }
+
+    public void deleteExpiredTokens() {
+        refreshTokenRepository.deleteExpiredTokens();
+    }
+
+    static void existingLog(User user, UserActivityLogRepository userActivityLogRepository) {
+        Optional<UserActivityLog> existingLog = userActivityLogRepository.findByUserIdAndActivityDate(user.getId(),
+                LocalDate.now());
+
+        if (existingLog.isEmpty()) {
+            UserActivityLog log = new UserActivityLog();
+            log.setUserId(user.getId());
+            log.setActivityDate(LocalDate.now());
+            userActivityLogRepository.save(log);
+        }
     }
 }

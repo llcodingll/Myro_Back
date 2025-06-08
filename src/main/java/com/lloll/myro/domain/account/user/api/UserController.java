@@ -2,11 +2,12 @@ package com.lloll.myro.domain.account.user.api;
 
 import com.lloll.myro.domain.account.jwt.TokenProvider;
 import com.lloll.myro.domain.account.user.application.UserServiceImpl;
-import com.lloll.myro.domain.account.user.domain.User;
 import com.lloll.myro.domain.account.user.application.request.UpdateUserRequest;
+import com.lloll.myro.domain.account.user.application.response.LoginResponse;
 import com.lloll.myro.domain.account.user.application.response.UserBillingResponse;
 import com.lloll.myro.domain.account.user.application.response.UserMyPageResponse;
 import com.lloll.myro.domain.account.user.application.response.UserResponse;
+import com.lloll.myro.domain.account.user.domain.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -61,5 +63,11 @@ public class UserController {
     public ResponseEntity<UserMyPageResponse> myPage(@RequestHeader HttpHeaders headers) {
         String token = tokenProvider.getToken(headers);
         return ResponseEntity.ok().body(userService.getUserInfo(token));
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<LoginResponse> validateAndReissueAccessToken(@RequestHeader HttpHeaders headers) {
+        String refreshToken = tokenProvider.getToken(headers);
+        return ResponseEntity.ok().body(userService.refreshToken(refreshToken));
     }
 }

@@ -25,12 +25,12 @@ public class RegisterUserRequest {
     private String password;
 
     @NotBlank(message = "이름은 필수 항목입니다.")
-    @Pattern(regexp = "^[가-힣]+$", message = "이름은 한글만 입력 가능합니다.")
+    @Pattern(regexp = "^[가-힣a-zA-Z]+$", message = "Name can only be entered in Korean or English.")
     @Size(max = 5)
     private String name;
 
     @Size(max = 10)
-    @Pattern(regexp = "^[가-힣\\s]*$", message = "닉네임은 한글과 띄어쓰기만 입력 가능합니다.")
+    @Pattern(regexp = "^[가-힣a-zA-Z\\s]+$", message = "Nickname can only be entered in Korean or English.")
     private String nickname;
 
     @NotNull(message = "성별은 필수 항목입니다.")

@@ -10,7 +10,10 @@ public class LoginResponse {
 
     private Token accessToken;
 
-    public LoginResponse(Token accessToken) {
+    private Token refreshToken;
+
+    public LoginResponse(Token accessToken, Token refreshToken) {
         this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 }

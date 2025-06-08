@@ -1,13 +1,17 @@
 package com.lloll.myro.domain.account.user.application;
 
-import com.lloll.myro.domain.account.dao.UserRepository;
+import com.lloll.myro.domain.account.jwt.RefreshTokenRepository;
 import com.lloll.myro.domain.account.jwt.Token;
 import com.lloll.myro.domain.account.jwt.TokenProvider;
-import com.lloll.myro.domain.account.user.domain.User;
-import com.lloll.myro.domain.account.user.application.response.LoginResponse;
+import com.lloll.myro.domain.account.jwt.domain.RefreshToken;
 import com.lloll.myro.domain.account.user.application.request.LoginUserRequest;
 import com.lloll.myro.domain.account.user.application.request.RegisterUserRequest;
+import com.lloll.myro.domain.account.user.application.response.LoginResponse;
+import com.lloll.myro.domain.account.user.dao.UserActivityLogRepository;
+import com.lloll.myro.domain.account.user.dao.UserRepository;
+import com.lloll.myro.domain.account.user.domain.User;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,11 +24,14 @@ public class NonUserServiceImpl implements NonUserService {
 
     @Value("${jwt.ACCESS_TOKEN_MINUTE_TIME}")
     private int ACCESS_TOKEN_MINUTE_TIME;
+    @Value("${jwt.REFRESH_TOKEN_MINUTE_TIME}")
+    private int REFRESH_TOKEN_MINUTE_TIME;
 
     private final UserRepository userRepository;
-
+    private final RefreshTokenRepository refreshTokenRepository;
     private final TokenProvider tokenProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserActivityLogRepository userActivityLogRepository;
 
     @Override
     public LoginResponse loginUser(LoginUserRequest request) {
@@ -34,8 +41,11 @@ public class NonUserServiceImpl implements NonUserService {
         validateUser(user, request.getPassword());
 
         Token accessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_MINUTE_TIME);
+        Token refreshToken = tokenProvider.generateToken(user, REFRESH_TOKEN_MINUTE_TIME);
 
-        return new LoginResponse(accessToken);
+        refreshTokenRepository.save(new RefreshToken(user, refreshToken.getToken(),
+                LocalDateTime.now().plusMinutes(REFRESH_TOKEN_MINUTE_TIME)));
+        return new LoginResponse(accessToken, refreshToken);
     }
 
     @Override
@@ -57,5 +67,9 @@ public class NonUserServiceImpl implements NonUserService {
 
     public boolean isPasswordMatch(String rawPassword, String encodedPassword) {
         return bCryptPasswordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    public void userActiveLog(User user) {
+        UserServiceImpl.existingLog(user, userActivityLogRepository);
     }
 }
