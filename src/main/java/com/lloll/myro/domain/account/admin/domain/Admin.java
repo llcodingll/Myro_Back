@@ -1,5 +1,7 @@
 package com.lloll.myro.domain.account.admin.domain;
 
+import com.lloll.myro.domain.account.admin.application.request.AddAdminRequest;
+import com.lloll.myro.domain.account.admin.application.request.UpdateAdminRequest;
 import com.lloll.myro.domain.account.domain.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,4 +39,24 @@ public class Admin {
 
     @Column(name = "role")
     private Role role;
+
+    public Admin(AddAdminRequest addAdminRequest) {
+        this.adminCode = addAdminRequest.getAdminCode();
+        this.name = addAdminRequest.getName();
+        this.password = bCryptPasswordEncoder.encode(addAdminRequest.getPassword());
+        this.role = addAdminRequest.getRole();
+    }
+
+    public void updateUserDetails(UpdateAdminRequest updateAdminRequest) {
+        if (updateAdminRequest.getAdminCode() != null) {
+            this.adminCode = updateAdminRequest.getAdminCode();
+        }
+        if (updateAdminRequest.getName() != null) {
+            name = updateAdminRequest.getName();
+        }
+        if (updateAdminRequest.getRole() != null) {
+            role = updateAdminRequest.getRole();
+        }
+    }
+
 }
