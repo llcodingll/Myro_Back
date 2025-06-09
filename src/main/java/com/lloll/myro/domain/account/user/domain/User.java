@@ -1,7 +1,8 @@
 package com.lloll.myro.domain.account.user.domain;
 
 import com.lloll.myro.domain.account.domain.Role;
-import com.lloll.myro.domain.account.user.application.request.RegisterUserRequest;
+import com.lloll.myro.domain.account.kakaoapi.service.request.KakaoAccountInfo;
+import com.lloll.myro.domain.account.naverapi.service.request.NaverAccountInfo;
 import com.lloll.myro.domain.account.user.application.request.UpdateUserRequest;
 import com.lloll.myro.domain.eventLog.domain.EventLog;
 import com.lloll.myro.domain.notification.domain.Notification;
@@ -73,13 +74,26 @@ public class User {
     @OneToMany
     private List<EventLog> logs;
 
-    public User(RegisterUserRequest RegisterUserRequest) {
-        this.email = RegisterUserRequest.getEmail();
-        this.password = bCryptPasswordEncoder.encode(RegisterUserRequest.getPassword());
-        this.name = RegisterUserRequest.getName();
-        this.nickname = RegisterUserRequest.getNickname();
-        this.gender = RegisterUserRequest.getGender();
-        this.birthDate = RegisterUserRequest.getBirthDate();
+    public User(KakaoAccountInfo kakaoAccountInfo) {
+        this.email = kakaoAccountInfo.getEmail();
+        this.password = bCryptPasswordEncoder.encode(kakaoAccountInfo.getEmail());
+        this.name = kakaoAccountInfo.getName();
+        this.nickname = kakaoAccountInfo.getNickname();
+        this.gender = kakaoAccountInfo.getGender();
+        this.birthDate = kakaoAccountInfo.getBirthDate();
+        this.createdAt = LocalDate.now();
+        this.updatedAt = LocalDate.now();
+        this.role = Role.USER;
+        this.isBilling = false;
+    }
+
+    public User(NaverAccountInfo naverAccountInfo) {
+        this.email = naverAccountInfo.getEmail();
+        this.password = bCryptPasswordEncoder.encode(naverAccountInfo.getEmail());
+        this.name = naverAccountInfo.getName();
+        this.nickname = naverAccountInfo.getNickname();
+        this.gender = naverAccountInfo.getGender();
+        this.birthDate = naverAccountInfo.getBirthDate();
         this.createdAt = LocalDate.now();
         this.updatedAt = LocalDate.now();
         this.role = Role.USER;

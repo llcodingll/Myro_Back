@@ -1,7 +1,10 @@
 package com.lloll.myro.domain.account.user.application;
 
 import com.lloll.myro.domain.account.jwt.Token;
+import com.lloll.myro.domain.account.kakaoapi.service.request.KakaoAccountInfo;
+import com.lloll.myro.domain.account.naverapi.service.request.NaverAccountInfo;
 import com.lloll.myro.domain.account.user.application.request.UpdateUserRequest;
+import com.lloll.myro.domain.account.user.application.response.LoginResponse;
 import com.lloll.myro.domain.account.user.application.response.UserBillingResponse;
 import com.lloll.myro.domain.account.user.application.response.UserMyPageResponse;
 import com.lloll.myro.domain.account.user.domain.User;
@@ -20,4 +23,8 @@ public interface UserService {
     Token getUserToken(Long userId);
     User findByEmail(String email);
     List<Object[]> getUserBillingCount();
+    LoginResponse registerKakaoUser(KakaoAccountInfo kakaoAccountInfo);
+    boolean naverUserCheck(String email);
+    LoginResponse naverLoginUser(String email);
+    LoginResponse registerNaverUser(NaverAccountInfo naverAccountInfo);
 }
