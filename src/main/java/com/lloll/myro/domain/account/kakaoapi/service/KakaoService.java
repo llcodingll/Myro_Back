@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -41,8 +41,9 @@ public class KakaoService {
                         .with("redirect_uri", redirectUri)
                         .with("code", code))
                 .retrieve()
-                .onStatus(HttpStatus::isError, clientResponse ->
-                        clientResponse.bodyToMono(String.class)
+                .onStatus(
+                        HttpStatusCode::isError,
+                        clientResponse -> clientResponse.bodyToMono(String.class)
                                 .flatMap(body -> Mono.error(new RuntimeException("API 오류: " + body)))
                 )
                 .bodyToMono(KakaoTokenResponse.class)
