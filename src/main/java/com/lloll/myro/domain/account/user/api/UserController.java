@@ -2,7 +2,7 @@ package com.lloll.myro.domain.account.user.api;
 
 import com.lloll.myro.domain.account.jwt.TokenProvider;
 import com.lloll.myro.domain.account.user.application.UserServiceImpl;
-import com.lloll.myro.domain.account.user.application.request.UpdateUserRequest;
+import com.lloll.myro.domain.account.user.api.request.UpdateUserRequest;
 import com.lloll.myro.domain.account.user.application.response.LoginResponse;
 import com.lloll.myro.domain.account.user.application.response.UserBillingResponse;
 import com.lloll.myro.domain.account.user.application.response.UserMyPageResponse;

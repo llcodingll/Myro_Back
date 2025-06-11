@@ -1,9 +1,9 @@
 package com.lloll.myro.domain.schedule.api;
 
 import com.lloll.myro.domain.schedule.application.ScheduleService;
-import com.lloll.myro.domain.schedule.dto.ScheduleDto;
-import com.lloll.myro.domain.schedule.dto.ScheduleResponseDto;
-import com.lloll.myro.domain.schedule.dto.UpdateScheduleDto;
+import com.lloll.myro.domain.schedule.api.request.ScheduleDto;
+import com.lloll.myro.domain.schedule.application.response.ScheduleResponseDto;
+import com.lloll.myro.domain.schedule.api.request.UpdateScheduleDto;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.lloll.myro.domain.account.admin.application.request;
+package com.lloll.myro.domain.account.admin.api.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

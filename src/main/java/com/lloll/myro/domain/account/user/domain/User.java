@@ -1,9 +1,9 @@
 package com.lloll.myro.domain.account.user.domain;
 
 import com.lloll.myro.domain.account.domain.Role;
-import com.lloll.myro.domain.account.kakaoapi.service.request.KakaoAccountInfo;
-import com.lloll.myro.domain.account.naverapi.service.request.NaverAccountInfo;
-import com.lloll.myro.domain.account.user.application.request.UpdateUserRequest;
+import com.lloll.myro.domain.account.kakaoapi.controller.request.KakaoAccountInfo;
+import com.lloll.myro.domain.account.naverapi.controller.request.NaverAccountInfo;
+import com.lloll.myro.domain.account.user.api.request.UpdateUserRequest;
 import com.lloll.myro.domain.eventLog.domain.EventLog;
 import com.lloll.myro.domain.notification.domain.Notification;
 import com.lloll.myro.domain.schedule.domain.Schedule;

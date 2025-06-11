@@ -1,9 +1,9 @@
 package com.lloll.myro.domain.account.admin.api;
 
 import com.lloll.myro.domain.account.admin.application.SuperAdminServiceImpl;
-import com.lloll.myro.domain.account.admin.application.request.AddAdminRequest;
-import com.lloll.myro.domain.account.admin.application.request.DeleteAdminRequest;
-import com.lloll.myro.domain.account.admin.application.request.UpdateAdminRequest;
+import com.lloll.myro.domain.account.admin.api.request.AddAdminRequest;
+import com.lloll.myro.domain.account.admin.api.request.DeleteAdminRequest;
+import com.lloll.myro.domain.account.admin.api.request.UpdateAdminRequest;
 import com.lloll.myro.domain.account.admin.domain.Admin;
 import com.lloll.myro.domain.account.jwt.TokenProvider;
 import jakarta.validation.Valid;

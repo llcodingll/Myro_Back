@@ -8,7 +8,7 @@
 //import com.lloll.myro.domain.schedule.application.ScheduleServiceImpl;
 //import com.lloll.myro.domain.schedule.dao.ScheduleRepository;
 //import com.lloll.myro.domain.schedule.domain.Schedule;
-//import com.lloll.myro.domain.schedule.dto.ScheduleDto;
+//import com.lloll.myro.domain.schedule.api.request.ScheduleDto;
 //import com.lloll.myro.domain.schedule.mapper.ScheduleMapper;
 //import java.time.LocalDateTime;
 //import java.util.Collections;

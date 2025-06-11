@@ -1,4 +1,4 @@
-package com.lloll.myro.domain.account.user.application.request;
+package com.lloll.myro.domain.account.kakaoapi.controller.request;
 
 import com.lloll.myro.domain.account.user.domain.Gender;
 import jakarta.validation.constraints.Email;
@@ -11,18 +11,10 @@ import java.time.LocalDate;
 import lombok.Getter;
 
 @Getter
-public class RegisterUserRequest {
-    public RegisterUserRequest() {
-    }
-
+public class KakaoAccountInfo {
     @NotBlank(message = "이메일은 필수 항목입니다.")
     @Email(message = "잘못된 이메일 형식입니다.")
     private String email;
-
-
-    @NotBlank(message = "비밀번호는 필수 항목입니다.")
-    @Size(min = 8, max = 18, message = "비밀번호는 8자 이상, 18자 이하입니다.")
-    private String password;
 
     @NotBlank(message = "이름은 필수 항목입니다.")
     @Pattern(regexp = "^[가-힣a-zA-Z]+$", message = "Name can only be entered in Korean or English.")
@@ -40,10 +32,11 @@ public class RegisterUserRequest {
     @Past(message = "생년월일은 과거 날짜여야 합니다.")
     private LocalDate birthDate;
 
-    public RegisterUserRequest(String email, String password, String name, String nickname, Gender gender,
-                          LocalDate birthDate) {
+    public KakaoAccountInfo() {
+    }
+
+    public KakaoAccountInfo(String email, String name, String nickname, Gender gender, LocalDate birthDate) {
         this.email = email;
-        this.password = password;
         this.name = name;
         this.nickname = nickname;
         this.gender = gender;

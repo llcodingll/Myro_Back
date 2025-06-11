@@ -1,4 +1,4 @@
-package com.lloll.myro.domain.account.user.application.request;
+package com.lloll.myro.domain.account.user.api.request;
 
 import com.lloll.myro.domain.account.user.domain.Gender;
 import jakarta.validation.constraints.Past;

@@ -1,7 +1,7 @@
 package com.lloll.myro.domain.account.admin.domain;
 
-import com.lloll.myro.domain.account.admin.application.request.AddAdminRequest;
-import com.lloll.myro.domain.account.admin.application.request.UpdateAdminRequest;
+import com.lloll.myro.domain.account.admin.api.request.AddAdminRequest;
+import com.lloll.myro.domain.account.admin.api.request.UpdateAdminRequest;
 import com.lloll.myro.domain.account.domain.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

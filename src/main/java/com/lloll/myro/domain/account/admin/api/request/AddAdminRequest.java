@@ -1,4 +1,4 @@
-package com.lloll.myro.domain.account.admin.application.request;
+package com.lloll.myro.domain.account.admin.api.request;
 
 import com.lloll.myro.domain.account.domain.Role;
 import jakarta.validation.constraints.NotBlank;

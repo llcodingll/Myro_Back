@@ -1,7 +1,7 @@
 package com.lloll.myro.domain.account.admin.api;
 
 import com.lloll.myro.domain.account.admin.application.NonAdminServiceImpl;
-import com.lloll.myro.domain.account.admin.application.request.LoginAdminRequest;
+import com.lloll.myro.domain.account.admin.api.request.LoginAdminRequest;
 import com.lloll.myro.domain.account.user.application.response.LoginResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

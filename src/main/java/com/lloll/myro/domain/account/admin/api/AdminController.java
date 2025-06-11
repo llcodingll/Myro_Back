@@ -1,7 +1,7 @@
 package com.lloll.myro.domain.account.admin.api;
 
 import com.lloll.myro.domain.account.admin.application.AdminServiceImpl;
-import com.lloll.myro.domain.account.admin.application.request.EmailRequest;
+import com.lloll.myro.domain.account.admin.api.request.EmailRequest;
 import com.lloll.myro.domain.account.jwt.Token;
 import com.lloll.myro.domain.account.user.domain.User;
 import jakarta.validation.Valid;

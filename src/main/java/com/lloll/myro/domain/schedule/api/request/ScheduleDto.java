@@ -1,7 +1,8 @@
-package com.lloll.myro.domain.schedule.dto;
+package com.lloll.myro.domain.schedule.api.request;
 
 import com.lloll.myro.domain.schedule.domain.RecurrenceRule;
 import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
+import com.lloll.myro.domain.account.user.domain.User;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,9 +12,8 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ScheduleResponseDto {
-    @NotNull
-    private Long scheduleId;
+public class ScheduleDto {
+    private User userId; //반복 일정 관련 에러 빙지를 위해 임의로 추가한 코드(수정 필요!!)
     @NotNull
     private String title;
     @NotNull
@@ -24,18 +24,15 @@ public class ScheduleResponseDto {
     private String customRecurrenceRule;
     private LocalDateTime startRecurrenceDate;
     private LocalDateTime endRecurrenceDate;
-
     private ScheduleStatus scheduleStatus;
-    private List<String> tagNames;
-
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
+    private List<String> tagNames;
+
     @Builder
-    public ScheduleResponseDto(Long scheduleId, String title, String description, LocalDateTime startDate,
-                               LocalDateTime endDate, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus, List<String> tagNames) {
-        this.scheduleId = scheduleId;
+    public ScheduleDto(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus, List<String> tagNames) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;

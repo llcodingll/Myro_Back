@@ -1,4 +1,4 @@
-package com.lloll.myro.domain.account.naverapi.service.request;
+package com.lloll.myro.domain.account.naverapi.controller.request;
 
 import com.lloll.myro.domain.account.user.domain.Gender;
 import jakarta.validation.constraints.Email;
