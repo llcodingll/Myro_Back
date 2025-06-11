@@ -1,4 +1,4 @@
-package com.lloll.myro.domain.account.naverapi.controller.request;
+package com.lloll.myro.domain.account.kakaoapi.api.request;
 
 import com.lloll.myro.domain.account.user.domain.Gender;
 import jakarta.validation.constraints.Email;
@@ -8,11 +8,10 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 
 @Getter
-public class NaverAccountInfo {
+public class KakaoAccountInfo {
     @NotBlank(message = "이메일은 필수 항목입니다.")
     @Email(message = "잘못된 이메일 형식입니다.")
     private String email;
@@ -33,21 +32,14 @@ public class NaverAccountInfo {
     @Past(message = "생년월일은 과거 날짜여야 합니다.")
     private LocalDate birthDate;
 
-    public NaverAccountInfo() {
+    public KakaoAccountInfo() {
     }
 
-    public NaverAccountInfo(String email, String name, String nickname, String gender, String year, String date) {
+    public KakaoAccountInfo(String email, String name, String nickname, Gender gender, LocalDate birthDate) {
         this.email = email;
         this.name = name;
         this.nickname = nickname;
-        if (gender.equals("M")){
-            this.gender = Gender.MALE;
-        }
-        if (gender.equals("F")){
-            this.gender = Gender.FEMALE;
-        }
-        String fullDate = String.format("%s-%s", year, date);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        this.birthDate = LocalDate.parse(fullDate, formatter);
+        this.gender = gender;
+        this.birthDate = birthDate;
     }
 }

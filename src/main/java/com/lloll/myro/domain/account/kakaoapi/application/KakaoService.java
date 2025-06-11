@@ -1,6 +1,6 @@
-package com.lloll.myro.domain.account.kakaoapi.service;
+package com.lloll.myro.domain.account.kakaoapi.application;
 
-import com.lloll.myro.domain.account.kakaoapi.service.response.KakaoTokenResponse;
+import com.lloll.myro.domain.account.kakaoapi.application.response.KakaoTokenResponse;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

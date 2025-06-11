@@ -1,8 +1,8 @@
 package com.lloll.myro.domain.account.user.application;
 
 import com.lloll.myro.domain.account.jwt.Token;
-import com.lloll.myro.domain.account.kakaoapi.controller.request.KakaoAccountInfo;
-import com.lloll.myro.domain.account.naverapi.controller.request.NaverAccountInfo;
+import com.lloll.myro.domain.account.kakaoapi.api.request.KakaoAccountInfo;
+import com.lloll.myro.domain.account.naverapi.api.request.NaverAccountInfo;
 import com.lloll.myro.domain.account.user.api.request.UpdateUserRequest;
 import com.lloll.myro.domain.account.user.application.response.LoginResponse;
 import com.lloll.myro.domain.account.user.application.response.UserBillingResponse;

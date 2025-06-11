@@ -1,4 +1,4 @@
-package com.lloll.myro.domain.account.kakaoapi.controller.request;
+package com.lloll.myro.domain.account.kakaoapi.api.request;
 
 import com.lloll.myro.domain.account.jwt.Token;
 import lombok.AllArgsConstructor;

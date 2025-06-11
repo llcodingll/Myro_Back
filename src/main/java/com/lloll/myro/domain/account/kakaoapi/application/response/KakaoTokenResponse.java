@@ -1,4 +1,4 @@
-package com.lloll.myro.domain.account.kakaoapi.service.response;
+package com.lloll.myro.domain.account.kakaoapi.application.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

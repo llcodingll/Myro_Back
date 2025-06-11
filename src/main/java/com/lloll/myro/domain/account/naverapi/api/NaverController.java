@@ -1,6 +1,6 @@
-package com.lloll.myro.domain.account.naverapi.controller;
+package com.lloll.myro.domain.account.naverapi.api;
 
-import com.lloll.myro.domain.account.naverapi.service.NaverService;
+import com.lloll.myro.domain.account.naverapi.application.NaverService;
 import com.lloll.myro.domain.account.user.application.response.LoginResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;

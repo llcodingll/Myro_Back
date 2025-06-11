@@ -1,7 +1,7 @@
-package com.lloll.myro.domain.account.kakaoapi.controller;
+package com.lloll.myro.domain.account.kakaoapi.api;
 
-import com.lloll.myro.domain.account.kakaoapi.service.KakaoService;
-import com.lloll.myro.domain.account.kakaoapi.controller.request.KakaoAccountInfo;
+import com.lloll.myro.domain.account.kakaoapi.application.KakaoService;
+import com.lloll.myro.domain.account.kakaoapi.api.request.KakaoAccountInfo;
 import com.lloll.myro.domain.account.user.application.UserServiceImpl;
 import com.lloll.myro.domain.account.user.application.response.LoginResponse;
 import jakarta.servlet.http.HttpServletResponse;

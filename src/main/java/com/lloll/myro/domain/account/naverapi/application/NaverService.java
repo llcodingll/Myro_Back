@@ -1,6 +1,6 @@
-package com.lloll.myro.domain.account.naverapi.service;
+package com.lloll.myro.domain.account.naverapi.application;
 
-import com.lloll.myro.domain.account.naverapi.controller.request.NaverAccountInfo;
+import com.lloll.myro.domain.account.naverapi.api.request.NaverAccountInfo;
 import com.lloll.myro.domain.account.user.application.UserServiceImpl;
 import com.lloll.myro.domain.account.user.application.response.LoginResponse;
 import java.util.Map;
