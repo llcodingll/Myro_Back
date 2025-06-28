@@ -1,8 +1,8 @@
 package com.lloll.myro.domain.schedule.application;
 
-import com.lloll.myro.domain.schedule.dto.ScheduleDto;
-import com.lloll.myro.domain.schedule.dto.ScheduleResponseDto;
-import com.lloll.myro.domain.schedule.dto.UpdateScheduleDto;
+import com.lloll.myro.domain.schedule.api.request.ScheduleDto;
+import com.lloll.myro.domain.schedule.application.response.ScheduleResponseDto;
+import com.lloll.myro.domain.schedule.api.request.UpdateScheduleDto;
 import java.util.List;
 
 public interface ScheduleService {

@@ -1,18 +1,22 @@
-package com.lloll.myro.domain.schedule.dto;
+package com.lloll.myro.domain.schedule.application.response;
 
 import com.lloll.myro.domain.schedule.domain.RecurrenceRule;
 import com.lloll.myro.domain.schedule.domain.ScheduleStatus;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UpdateScheduleDto {
-
+public class ScheduleResponseDto {
+    @NotNull
     private Long scheduleId;
+    @NotNull
     private String title;
+    @NotNull
     private String description;
 
     private Boolean isRecurring;
@@ -22,22 +26,26 @@ public class UpdateScheduleDto {
     private LocalDateTime endRecurrenceDate;
 
     private ScheduleStatus scheduleStatus;
+    private List<String> tagNames;
+
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
     @Builder
-    public UpdateScheduleDto(Long scheduleId, String title, String description, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus, LocalDateTime startDate, LocalDateTime endDate) {
+    public ScheduleResponseDto(Long scheduleId, String title, String description, LocalDateTime startDate,
+                               LocalDateTime endDate, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus, List<String> tagNames) {
         this.scheduleId = scheduleId;
         this.title = title;
         this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.isRecurring = isRecurring;
         this.recurrenceRule = recurrenceRule;
         this.customRecurrenceRule = customRecurrenceRule;
         this.startRecurrenceDate = startRecurrenceDate;
         this.endRecurrenceDate = endRecurrenceDate;
         this.scheduleStatus = scheduleStatus;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.tagNames = tagNames;
     }
 }

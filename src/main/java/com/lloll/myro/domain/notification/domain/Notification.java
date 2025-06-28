@@ -1,7 +1,7 @@
 package com.lloll.myro.domain.notification.domain;
 
 import com.lloll.myro.domain.schedule.domain.Schedule;
-import com.lloll.myro.domain.user.domain.User;
+import com.lloll.myro.domain.account.user.domain.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
