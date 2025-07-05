@@ -39,10 +39,10 @@ public class EventLog {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "userId")
-    private User userId;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "scheduleId")
+    @JoinColumn(name = "schedule_id")
     private Schedule scheduleId;
 }

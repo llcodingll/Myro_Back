@@ -29,7 +29,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
+@Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -37,7 +37,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userId")
+    @Column(name = "user_id")
     private long id;
 
     @Column(unique = true)
@@ -66,13 +66,13 @@ public class User {
     private LocalDate updatedAt;
     private LocalDate deletedAt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Schedule> schedules;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Notification> notifications;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<EventLog> logs;
 
     public User(RegisterUserRequest registerUserRequest) {

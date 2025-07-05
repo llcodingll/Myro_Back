@@ -14,6 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u.isBilling, COUNT(u) FROM User u GROUP BY u.isBilling")
     List<Object[]> countUserByBilling();
 
-    List<User> findByDeleteDateBeforeAndDeleteDateIsNotNull(LocalDateTime threeMonthsAgo);
+    List<User> findByDeletedAtBeforeAndDeletedAtIsNotNull(LocalDateTime threeMonthsAgo);
 
 }

@@ -38,7 +38,7 @@ public class Schedule {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
     private String title;
     private String description;
@@ -67,7 +67,7 @@ public class Schedule {
     private LocalDateTime endDate;
 
     @Builder
-    public Schedule(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus, User userId) {
+    public Schedule(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Boolean isRecurring, RecurrenceRule recurrenceRule, String customRecurrenceRule, LocalDateTime startRecurrenceDate, LocalDateTime endRecurrenceDate, ScheduleStatus scheduleStatus, User user) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -78,7 +78,7 @@ public class Schedule {
         this.startRecurrenceDate = startRecurrenceDate;
         this.endRecurrenceDate = endRecurrenceDate;
         this.scheduleStatus = scheduleStatus;
-        this.userId = userId;
+        this.user = user;
     }
 
     public void addTag(Tag tag) {
