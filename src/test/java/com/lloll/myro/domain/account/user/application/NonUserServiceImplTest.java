@@ -62,16 +62,12 @@ class NonUserServiceImplTest {
             String email = "user@domain.com";
             String rawPassword = "correctPW";
             String encodedPassword = "$2a$10$encoded";
-            User user = mock(User.class);
-            when(user.getPassword()).thenReturn(encodedPassword);
-            when(user.getDeletedAt()).thenReturn(null);
-            when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+            User user = mockActiveUser(email, encodedPassword);
             when(bCryptPasswordEncoder.matches(rawPassword, encodedPassword)).thenReturn(true);
 
             Token accessToken = new Token("access-token");
             Token refreshToken = new Token("refresh-token");
-            when(tokenProvider.generateToken(user, 10)).thenReturn(accessToken);
-            when(tokenProvider.generateToken(user, 60)).thenReturn(refreshToken);
+            mockTokenProvider(user, accessToken, refreshToken);
 
             // when
             LoginUserRequest request = new LoginUserRequest(email, rawPassword);
@@ -81,6 +77,19 @@ class NonUserServiceImplTest {
             assertThat(response.getAccessToken().getToken()).isEqualTo("access-token");
             assertThat(response.getRefreshToken().getToken()).isEqualTo("refresh-token");
             verify(refreshTokenRepository).save(any(RefreshToken.class));
+        }
+
+        private User mockActiveUser(String email, String encodedPassword) {
+            User user = mock(User.class);
+            when(user.getPassword()).thenReturn(encodedPassword);
+            when(user.getDeletedAt()).thenReturn(null);
+            when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+            return user;
+        }
+
+        private void mockTokenProvider(User user, Token accessToken, Token refreshToken) {
+            when(tokenProvider.generateToken(user, 10)).thenReturn(accessToken);
+            when(tokenProvider.generateToken(user, 60)).thenReturn(refreshToken);
         }
 
         @Test
@@ -102,9 +111,7 @@ class NonUserServiceImplTest {
         void loginFail_whenUserIsSuspendedOrDeleted() {
             // given
             String email = "deleted@domain.com";
-            User user = mock(User.class);
-            when(user.getDeletedAt()).thenReturn(LocalDate.now());
-            when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+            mockDeletedUser(email);
             LoginUserRequest request = new LoginUserRequest(email, "pw");
 
             // when & then
@@ -113,17 +120,22 @@ class NonUserServiceImplTest {
                     .hasMessageContaining("정지된 사용자입니다");
         }
 
+        private User mockDeletedUser(String email) {
+            User user = mock(User.class);
+            when(user.getDeletedAt()).thenReturn(LocalDate.now());
+            when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+            return user;
+        }
+
         @Test
         @DisplayName("비밀번호가 일치하지 않으면 '비밀번호 불일치' 예외가 발생한다")
         void loginFail_whenPasswordIsIncorrect() {
             // given
             String email = "user@domain.com";
             String rawPassword = "wrongPW";
-            User user = mock(User.class);
-            when(user.getPassword()).thenReturn("$2a$10$encoded");
-            when(user.getDeletedAt()).thenReturn(null);
-            when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
-            when(bCryptPasswordEncoder.matches(rawPassword, "$2a$10$encoded")).thenReturn(false);
+            String encodedPassword = "$2a$10$encoded";
+            User user = mockActiveUser(email, encodedPassword);
+            when(bCryptPasswordEncoder.matches(rawPassword, encodedPassword)).thenReturn(false);
 
             LoginUserRequest request = new LoginUserRequest(email, rawPassword);
 
@@ -143,9 +155,7 @@ class NonUserServiceImplTest {
         void registerSuccess_whenNewEmail() {
             // given
             String email = "new@domain.com";
-            RegisterUserRequest req = new RegisterUserRequest(
-                    email, "pw123456", "홍길동", "길동", Gender.MALE, LocalDate.of(1995, 1, 1)
-            );
+            RegisterUserRequest req = createRegisterUserRequest(email);
             when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
             User savedUser = new User(req);
             when(userRepository.save(any(User.class))).thenReturn(savedUser);
@@ -163,9 +173,7 @@ class NonUserServiceImplTest {
         void registerFail_whenEmailAlreadyExists() {
             // given
             String email = "dup@domain.com";
-            RegisterUserRequest req = new RegisterUserRequest(
-                    email, "pw123456", "홍길동", "길동", Gender.MALE, LocalDate.of(1995, 1, 1)
-            );
+            RegisterUserRequest req = createRegisterUserRequest(email);
             when(userRepository.findByEmail(email)).thenReturn(Optional.of(mock(User.class)));
 
             // when & then
@@ -174,4 +182,11 @@ class NonUserServiceImplTest {
                     .hasMessageContaining("이미 존재하는 이메일입니다.");
         }
     }
+
+    private RegisterUserRequest createRegisterUserRequest(String email) {
+        return new RegisterUserRequest(
+                email, "pw123456", "홍길동", "길동", Gender.MALE, LocalDate.of(1995, 1, 1)
+        );
+    }
+
 }
