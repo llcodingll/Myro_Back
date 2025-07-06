@@ -14,7 +14,6 @@ import com.lloll.myro.domain.account.jwt.domain.RefreshToken;
 import com.lloll.myro.domain.account.user.api.request.LoginUserRequest;
 import com.lloll.myro.domain.account.user.api.request.RegisterUserRequest;
 import com.lloll.myro.domain.account.user.application.response.LoginResponse;
-import com.lloll.myro.domain.account.user.dao.UserActivityLogRepository;
 import com.lloll.myro.domain.account.user.dao.UserRepository;
 import com.lloll.myro.domain.account.user.domain.Gender;
 import com.lloll.myro.domain.account.user.domain.User;
@@ -34,11 +33,14 @@ import org.springframework.test.util.ReflectionTestUtils;
 @ExtendWith(MockitoExtension.class)
 class NonUserServiceImplTest {
 
-    @Mock private UserRepository userRepository;
-    @Mock private RefreshTokenRepository refreshTokenRepository;
-    @Mock private TokenProvider tokenProvider;
-    @Mock private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Mock private UserActivityLogRepository userActivityLogRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private RefreshTokenRepository refreshTokenRepository;
+    @Mock
+    private TokenProvider tokenProvider;
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @InjectMocks
     private NonUserServiceImpl nonUserService;
@@ -55,7 +57,7 @@ class NonUserServiceImplTest {
 
         @Test
         @DisplayName("존재하는 활성 회원이 올바른 비밀번호로 로그인하면 액세스/리프레시 토큰이 발급된다")
-        void 로그인_정상_성공() {
+        void loginSuccess_whenActiveUserAndCorrectPassword() {
             // given
             String email = "user@domain.com";
             String rawPassword = "correctPW";
@@ -83,7 +85,7 @@ class NonUserServiceImplTest {
 
         @Test
         @DisplayName("존재하지 않는 이메일로 로그인 시도 시 '존재하지 않는 사용자' 예외가 발생한다")
-        void 로그인_실패_존재하지않는_이메일() {
+        void loginFail_whenEmailDoesNotExist() {
             // given
             String email = "notfound@domain.com";
             when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
@@ -97,7 +99,7 @@ class NonUserServiceImplTest {
 
         @Test
         @DisplayName("정지 또는 탈퇴된 회원이 로그인 시도 시 '정지된 사용자' 예외가 발생한다")
-        void 로그인_실패_정지된_회원() {
+        void loginFail_whenUserIsSuspendedOrDeleted() {
             // given
             String email = "deleted@domain.com";
             User user = mock(User.class);
@@ -113,7 +115,7 @@ class NonUserServiceImplTest {
 
         @Test
         @DisplayName("비밀번호가 일치하지 않으면 '비밀번호 불일치' 예외가 발생한다")
-        void 로그인_실패_비밀번호_불일치() {
+        void loginFail_whenPasswordIsIncorrect() {
             // given
             String email = "user@domain.com";
             String rawPassword = "wrongPW";
@@ -138,7 +140,7 @@ class NonUserServiceImplTest {
 
         @Test
         @DisplayName("신규 이메일로 회원가입하면 회원 정보가 저장된다")
-        void 회원가입_정상_성공() {
+        void registerSuccess_whenNewEmail() {
             // given
             String email = "new@domain.com";
             RegisterUserRequest req = new RegisterUserRequest(
@@ -158,7 +160,7 @@ class NonUserServiceImplTest {
 
         @Test
         @DisplayName("이미 등록된 이메일로 회원가입 시도 시 '이미 존재하는 이메일' 예외가 발생한다")
-        void 회원가입_실패_중복이메일() {
+        void registerFail_whenEmailAlreadyExists() {
             // given
             String email = "dup@domain.com";
             RegisterUserRequest req = new RegisterUserRequest(
