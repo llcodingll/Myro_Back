@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import com.lloll.myro.domain.account.jwt.Token;
 import com.lloll.myro.domain.account.jwt.domain.RefreshToken;
-import com.lloll.myro.domain.account.user.api.request.RegisterUserRequest;
 import com.lloll.myro.domain.account.user.api.request.UpdateUserRequest;
 import com.lloll.myro.domain.account.user.application.response.LoginResponse;
 import com.lloll.myro.domain.account.user.application.response.UserBillingResponse;
@@ -36,12 +35,8 @@ class UserServiceImplIntegrationTest extends UserServiceTestSupport {
         //given
         String token = "validToken";
         Long userId = 1L;
-
-        RegisterUserRequest req = new RegisterUserRequest(
-                "test@email.com", "pw", "OldName", "OldNick", Gender.FEMALE, LocalDate.of(1980, 1, 1)
-        );
-        User user = new User(req);
-        setField(user, "id", userId);
+        User user = createUserWithId("test@email.com", "pw", "OldName", "OldNick", Gender.FEMALE,
+                LocalDate.of(1980, 1, 1), userId);
 
         UpdateUserRequest request = new UpdateUserRequest();
         request.setName("Hong Gil Dong");
@@ -70,11 +65,8 @@ class UserServiceImplIntegrationTest extends UserServiceTestSupport {
         //given
         String token = "validToken";
         Long userId = 1L;
-        RegisterUserRequest req = new RegisterUserRequest(
-                "test@email.com", "pw", "Name", "Nick", Gender.MALE, LocalDate.of(1990, 1, 1)
-        );
-        User user = new User(req);
-        setField(user, "id", userId);
+        User user = createUserWithId("test@email.com", "pw", "Name", "Nick", Gender.MALE, LocalDate.of(1990, 1, 1),
+                userId);
         setField(user, "deletedAt", LocalDate.now());
 
         UpdateUserRequest request = new UpdateUserRequest();
@@ -121,11 +113,8 @@ class UserServiceImplIntegrationTest extends UserServiceTestSupport {
         //given
         String token = "validToken";
         Long userId = 1L;
-        RegisterUserRequest req = new RegisterUserRequest(
-                "test@email.com", "pw", "Name", "Nick", Gender.FEMALE, LocalDate.of(1990, 1, 1)
-        );
-        User user = new User(req);
-        setField(user, "id", userId);
+        User user = createUserWithId("test@email.com", "pw", "Name", "Nick", Gender.FEMALE, LocalDate.of(1990, 1, 1),
+                userId);
         setField(user, "isBilling", true);
 
         when(tokenProvider.getUserIdFromToken(token)).thenReturn(userId);
@@ -144,11 +133,8 @@ class UserServiceImplIntegrationTest extends UserServiceTestSupport {
         //given
         String token = "validToken";
         Long userId = 1L;
-        RegisterUserRequest req = new RegisterUserRequest(
-                "test@email.com", "pw", "Hong Gil Dong", "GilDong", Gender.MALE, LocalDate.of(1990, 1, 1)
-        );
-        User user = new User(req);
-        setField(user, "id", userId);
+        User user = createUserWithId("test@email.com", "pw", "Hong Gil Dong", "GilDong", Gender.MALE,
+                LocalDate.of(1990, 1, 1), userId);
 
         when(tokenProvider.getUserIdFromToken(token)).thenReturn(userId);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
@@ -170,11 +156,8 @@ class UserServiceImplIntegrationTest extends UserServiceTestSupport {
         //given
         String refreshToken = "refreshToken";
         Long userId = 1L;
-        RegisterUserRequest req = new RegisterUserRequest(
-                "test@email.com", "pw", "Name", "Nick", Gender.FEMALE, LocalDate.of(1990, 1, 1)
-        );
-        User user = new User(req);
-        setField(user, "id", userId);
+        User user = createUserWithId("test@email.com", "pw", "Name", "Nick", Gender.FEMALE, LocalDate.of(1990, 1, 1),
+                userId);
 
         Token newAccessToken = new Token("newAccess");
         Token newRefreshToken = new Token("newRefresh");
@@ -199,14 +182,8 @@ class UserServiceImplIntegrationTest extends UserServiceTestSupport {
     void findAll_success() {
         //given
         PageRequest pageable = PageRequest.of(0, 2);
-        RegisterUserRequest req1 = new RegisterUserRequest(
-                "a@email.com", "pw", "A", "A", Gender.MALE, LocalDate.of(1990, 1, 1)
-        );
-        RegisterUserRequest req2 = new RegisterUserRequest(
-                "b@email.com", "pw", "B", "B", Gender.FEMALE, LocalDate.of(1991, 2, 2)
-        );
-        User user1 = new User(req1);
-        User user2 = new User(req2);
+        User user1 = createUserWithId("a@email.com", "pw", "A", "A", Gender.MALE, LocalDate.of(1990, 1, 1), 1L);
+        User user2 = createUserWithId("b@email.com", "pw", "B", "B", Gender.FEMALE, LocalDate.of(1991, 2, 2), 2L);
         List<User> users = Arrays.asList(user1, user2);
         Page<User> page = new PageImpl<>(users, pageable, users.size());
 
@@ -224,11 +201,8 @@ class UserServiceImplIntegrationTest extends UserServiceTestSupport {
     void getUserToken_success() {
         //given
         Long userId = 1L;
-        RegisterUserRequest req = new RegisterUserRequest(
-                "test@email.com", "pw", "Name", "Nick", Gender.FEMALE, LocalDate.of(1990, 1, 1)
-        );
-        User user = new User(req);
-        setField(user, "id", userId);
+        User user = createUserWithId("test@email.com", "pw", "Name", "Nick", Gender.FEMALE, LocalDate.of(1990, 1, 1),
+                userId);
 
         Token token = new Token("tokenValue");
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
@@ -257,10 +231,7 @@ class UserServiceImplIntegrationTest extends UserServiceTestSupport {
     void findByEmail_success() {
         //given
         String email = "test@email.com";
-        RegisterUserRequest req = new RegisterUserRequest(
-                email, "pw", "Name", "Nick", Gender.FEMALE, LocalDate.of(1990, 1, 1)
-        );
-        User user = new User(req);
+        User user = createUserWithId(email, "pw", "Name", "Nick", Gender.FEMALE, LocalDate.of(1990, 1, 1), 1L);
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
 
         //when

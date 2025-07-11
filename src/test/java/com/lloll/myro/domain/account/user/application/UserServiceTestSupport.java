@@ -2,8 +2,12 @@ package com.lloll.myro.domain.account.user.application;
 
 import com.lloll.myro.domain.account.jwt.RefreshTokenRepository;
 import com.lloll.myro.domain.account.jwt.TokenProvider;
+import com.lloll.myro.domain.account.user.api.request.RegisterUserRequest;
 import com.lloll.myro.domain.account.user.dao.UserActivityLogRepository;
 import com.lloll.myro.domain.account.user.dao.UserRepository;
+import com.lloll.myro.domain.account.user.domain.Gender;
+import com.lloll.myro.domain.account.user.domain.User;
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -35,5 +39,13 @@ public abstract class UserServiceTestSupport {
             throw new RuntimeException(e);
         }
     }
-    
+
+    protected static User createUserWithId(String email, String password, String name, String nickname, Gender gender,
+                                           LocalDate birthDate, Long userId) {
+        RegisterUserRequest req = new RegisterUserRequest(email, password, name, nickname, gender, birthDate);
+        User user = new User(req);
+        setField(user, "id", userId);
+        return user;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.lloll.myro.domain.account.user.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -77,6 +78,33 @@ class UserServiceImplSocialIntegrationTest extends UserServiceTestSupport {
     }
 
     @Test
+    @DisplayName("네이버 계정 정보로 회원가입하면 신규 회원이면 회원가입과 로그인이, 기존 회원이면 로그인이 된다.")
+    void registerNaverUser_newAndExisting() {
+        //given
+        NaverAccountInfo info = new NaverAccountInfo(
+                "test@naver.com", "홍길동", "길동", "M", "1990", "01-01"
+        );
+        User user = new User(info);
+
+        // 기존 회원
+        when(userRepository.findByEmail(info.getEmail())).thenReturn(Optional.of(user));
+        doReturn(new LoginResponse()).when(userRepository).findByEmail(info.getEmail());
+        //when
+        LoginResponse response1 = userService.registerNaverUser(info);
+        //then
+        assertThat(response1).isNotNull();
+
+        // 신규 회원
+        when(userRepository.findByEmail(info.getEmail())).thenReturn(Optional.empty());
+        when(userRepository.save(any(User.class))).thenReturn(user);
+        doReturn(new LoginResponse()).when(userRepository).findByEmail(info.getEmail());
+        //when
+        LoginResponse response2 = userService.registerNaverUser(info);
+        //then
+        assertThat(response2).isNotNull();
+    }
+
+    @Test
     @DisplayName("카카오 계정이 이미 있으면 true, 없으면 false를 반환한다.")
     void kakaoUserCheck_trueAndFalse() {
         //given
@@ -133,6 +161,33 @@ class UserServiceImplSocialIntegrationTest extends UserServiceTestSupport {
         //when //then
         assertThatThrownBy(() -> userService.kakaoLoginUser(email))
                 .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    @DisplayName("카카오 계정 정보로 회원가입하면 신규 회원이면 회원가입과 로그인이, 기존 회원이면 로그인이 된다.")
+    void registerKakaoUser_newAndExisting() {
+        //given
+        KakaoAccountInfo info = new KakaoAccountInfo(
+                "test@kakao.com", "홍길동", "길동", Gender.MALE, LocalDate.of(1990, 1, 1)
+        );
+        User user = new User(info);
+
+        // 기존 회원
+        when(userRepository.findByEmail(info.getEmail())).thenReturn(Optional.of(user));
+        doReturn(new LoginResponse()).when(userRepository).findByEmail(info.getEmail());
+        //when
+        LoginResponse response1 = userService.registerKakaoUser(info);
+        //then
+        assertThat(response1).isNotNull();
+
+        // 신규 회원
+        when(userRepository.findByEmail(info.getEmail())).thenReturn(Optional.empty());
+        when(userRepository.save(any(User.class))).thenReturn(user);
+        doReturn(new LoginResponse()).when(userRepository).findByEmail(info.getEmail());
+        //when
+        LoginResponse response2 = userService.registerKakaoUser(info);
+        //then
+        assertThat(response2).isNotNull();
     }
 
 }
