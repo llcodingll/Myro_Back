@@ -15,16 +15,32 @@ import org.springframework.data.domain.Pageable;
 public interface UserService {
 
     User updateUser(UpdateUserRequest request, String token);
+
     void deleteUser(String token);
+
     void logoutUser(String token);
+
     UserBillingResponse billingUser(String token);
+
     UserMyPageResponse getUserInfo(String token);
+
     Page<User> findAll(Pageable pageable);
+
     Token getUserToken(Long userId);
+
     User findByEmail(String email);
+
     List<Object[]> getUserBillingCount();
+
     LoginResponse registerKakaoUser(KakaoAccountInfo kakaoAccountInfo);
-    boolean naverUserCheck(String email);
-    LoginResponse naverLoginUser(String email);
+
+    boolean kakaoUserCheck(String email);
+
+    LoginResponse kakaoLoginUser(String email);
+
     LoginResponse registerNaverUser(NaverAccountInfo naverAccountInfo);
+
+    boolean naverUserCheck(String email);
+
+    LoginResponse naverLoginUser(String email);
 }

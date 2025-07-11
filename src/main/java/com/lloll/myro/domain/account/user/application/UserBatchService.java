@@ -23,7 +23,7 @@ public class UserBatchService {
     public void performRealDelete() {
         LocalDateTime threeMonthsAgo = LocalDateTime.now().minusMonths(3);
 
-        List<User> usersToDelete = userRepository.findByDeleteDateBeforeAndDeleteDateIsNotNull(threeMonthsAgo);
+        List<User> usersToDelete = userRepository.findByDeletedAtBeforeAndDeletedAtIsNotNull(threeMonthsAgo);
 
         if (!usersToDelete.isEmpty()) {
             userRepository.deleteAll(usersToDelete);
