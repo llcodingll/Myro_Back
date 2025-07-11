@@ -1,8 +1,9 @@
-package com.lloll.myro.domain.account.user.application;
+package com.lloll.myro.domain.account.user;
 
 import com.lloll.myro.domain.account.jwt.RefreshTokenRepository;
 import com.lloll.myro.domain.account.jwt.TokenProvider;
 import com.lloll.myro.domain.account.user.api.request.RegisterUserRequest;
+import com.lloll.myro.domain.account.user.application.UserServiceImpl;
 import com.lloll.myro.domain.account.user.dao.UserActivityLogRepository;
 import com.lloll.myro.domain.account.user.dao.UserRepository;
 import com.lloll.myro.domain.account.user.domain.Gender;

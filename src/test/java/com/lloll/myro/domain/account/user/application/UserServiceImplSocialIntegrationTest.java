@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import com.lloll.myro.domain.account.kakaoapi.api.request.KakaoAccountInfo;
 import com.lloll.myro.domain.account.naverapi.api.request.NaverAccountInfo;
+import com.lloll.myro.domain.account.user.UserServiceTestSupport;
 import com.lloll.myro.domain.account.user.application.response.LoginResponse;
 import com.lloll.myro.domain.account.user.domain.Gender;
 import com.lloll.myro.domain.account.user.domain.User;
